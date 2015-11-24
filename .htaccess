@@ -1,0 +1,29 @@
+# habilita o modulo para reescrita de url
+<IfModule mod_rewrite.c>
+	# impede a listagem dos arquivos das pastas
+	Options -Indexes
+	
+	# habilita a engine de reescrita
+	RewriteEngine on
+	
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	
+	# fazendo logout
+	RewriteRule ^([a-z]*)(logout)/?$ index.php?logout=1 [NC,L]
+	# link para nova conta
+	RewriteRule ^([a-z]*)(new-account)/?$ index.php?newAccount=1 [NC,L]
+	# requisicoes normais
+	RewriteRule ^([a-z]+)([/?]*)([a-z]*)([/?]*)([0-9]*)([/?]*)([aj]*)/?$ index.php?page=$1&ac=$3&id=$5&$7 [NC,L,QSA]
+	
+	# impede acesso direto a arquivos .php e .html
+	RewriteRule ^([\.php|\.html])/? index.php?erro=403 [R=403,NC,L]
+	
+	RewriteRule ^(\.*)$ index.php?page=$1 [NC,L,QSA]
+	
+	ErrorDocument 400 /index.php?erro=400
+	ErrorDocument 401 /index.php?erro=401
+	ErrorDocument 403 /index.php?erro=403
+	ErrorDocument 404 /index.php?erro=404
+	ErrorDocument 500 /index.php?erro=500
+</IfModule>

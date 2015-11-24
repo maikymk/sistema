@@ -1,0 +1,74 @@
+*{ font-family: "Arial", Verdana, Sans; font-size: 13px; margin: 0; padding: 0; }
+body{ padding-top: 50px; }
+.conteudoFrame{ overflow: hidden; padding: 0 !important; }
+
+/*****************************************************
+ ********* SUBISTITUINDO PADROES DO BOOTSTRAP ********
+ ****************************************************/
+.conteudo{ margin-top: 49px; border-color: #333; border-left: 1px; width: 100%; overflow: hidden; border: 1px solid #CCC; padding: 0; border-radius: 10px; }
+.row{ width: 100%; display: block; clear: both; margin: 0px !important; }
+#containerPrincipal{ width: 100%; margin: auto; padding: 0; }
+#logout{ margin: 15px 5px; padding: 0; color: #d9534f; }
+#logout:hover{ color: #f4f4f4 !important; }
+.no-padding{ padding: 0 !important; }
+
+/**********************************
+ ************* MKBOOK *************
+ *********************************/
+#perfil{ width: 60%; margin: auto; border: 1px solid #ccc; }
+.div-capa{ text-align: center; }
+#foto_capa{ margin: auto; width: 100%; }
+#foto_perfil{ margin-top: -65px; border: 2px solid #FFF; }
+.nome_perfil{ text-align: left; }
+.change_foto_perfil{ cursor: pointer; }
+.change_foto_perfil:hover{ color: #FFF; background: #800; display: block; border-radius: 10px; }
+#span_foto_perfil{ background: #FFF; display: block; margin: -50% auto 43%; width: 95%; border: 1px solid #CCC; position: relative; cursor: pointer; }
+
+/**********************************
+ ******* CLASSES ESPECIAIS ********
+ *********************************/
+.textoMedio{ font-size: 1.4em; }
+.center{ text-align: center; }
+.color-fff{ color: #FFF !important; }
+.mk-col-80{ width: 80%; }
+.mk-mrg-tp-20{ margin-top: 20px; }
+
+/**********************************
+ ********* TELA DE LOGIN **********
+ *********************************/
+#telaLogin, #novaConta{ width: 100%; min-height: 100%; opacity: 0.8; position: absolute; background: #000; }
+.telaLogin, .telaNovaConta{ max-width: 350px; padding: 10px 2%; background: #F4F4F4; border-radius: 5px; border: 1px solid #CCC; overflow: hidden; }
+.telaLogin{ margin: 20% auto 0 auto; }
+.telaNovaConta{ margin: 10% auto 0 auto; }
+.labelLogin{ font-size: 1.3em; color: #666; display: block; float: left; }
+.loginUser, .novaConta{ background: #FFF; width: 100% !important; }
+.submitConcluir{ float: right; background: #060; border: 1px solid #000; color: #FFF;  }
+.erroLogin{ color: #D00; border: 1px solid #D00; }
+.sucessoLogin{ color: #070; border: 1px solid #070; }
+.msgNovaConta{ padding: 2px 0; text-align: center; display: block; }
+#formTelaLogin{ margin: 0; padding: 0; }
+.row-login{ margin: 5px 0 !important; }
+#link-normal{ padding-left: 0; padding-right: 0; }
+
+/*****************************************************
+ *** PADROES PARA TODOS OS ELEMENTOS DO MESMO TIPO ***
+ ****************************************************/
+input[type="submit"]{ padding: 5px 10px; font-weight: bold; cursor: pointer; }
+input[type="text"], input[type="password"], input[type="date"], input[type="email"]{ 
+	font-size: 1.2em; 
+	color: #333; 
+	border-radius: 0px; 
+	padding: 5px; 
+	border: 1px solid #333;
+	outline: none;
+}
+
+/*****************************************************
+ ******************* TELAS DE ERRO *******************
+ ****************************************************/
+.telaErro{ width: 100%; min-width: 100%; min-height: auto; height: auto; }
+.imgErro{ width: 100%; height: auto; }
+
+@media only screen and (min-width: 992px){
+	#foto_perfil{ width: 100%; }
+}
