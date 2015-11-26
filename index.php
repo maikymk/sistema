@@ -1,25 +1,24 @@
 <?php
 require_once 'system'.DIRECTORY_SEPARATOR.'config.php';
-require_once 'lib'.DS.'autoload.php';
+require_once LIB.DS.'autoload.php';
+
+$array = array(
+	DIR_RAIZ => array('model.php', 'view.php'),
+	LIB => ''
+);
+
+$autoLoad = new Autoload();
+$autoLoad->setDirAndFiles($array);
+$autoLoad->setExtensions(array('.php'));
+$autoLoad->load();
 
 class ControllerFrame{
 	private $erroLogin;
 	private $container;
 	public  $model;
 	public  $view;
-	public  $autoLoad;
 	
 	function __construct(){
-		$array = array(
-				DIR_RAIZ => array('model.php', 'view.php'),
-				LIB => ''
-		);
-		
-		$this->autoLoad = new Autoload();
-		$this->autoLoad->setDirAndFiles($array);
-		$this->autoLoad->setExtensions(array('.php'));
-		$this->autoLoad->load();
-		
 		if( !Sessao::verificaSessao() )
 			Sessao::iniciaSessao();
 			
@@ -41,10 +40,14 @@ class ControllerFrame{
 	 * Faz tratamento da url que o usuario esta tentando acessar
 	 */
 	private function trataUrl(){
-		if( isset($_GET['erro']) ){
+		if( isset($_GET['erro']) ){//verifica se ocorreu algum erro
 			$erro = htmlentities($_GET['erro']);
 			$this->verificaErro($erro);//verifica o erro que foi passado pelo $_GET via htaccess
-		} else if( isset($_GET['newAccount']) ){
+		} else if( isset($_GET['page']) && $_GET['page'] == 'logout' ) {//verifica se esta fazendo logout
+			Sessao::destroiSessao();
+			header('Location: '.DIR_RAIZ);
+			exit;
+		} else if( isset($_GET['page']) && $_GET['page'] == 'new-account' ){//verifica se esta fazendo login
 			$erroNovaConta = null;
 			
 			if( isset($_POST['submitNovaConta']) ){//sem ajax
@@ -70,10 +73,6 @@ class ControllerFrame{
 		if( isset($_GET['page']) && !empty($_GET['page']) ){
 			$page = htmlentities($_GET['page']);
 			$this->validaAcesso($page);//valida a pagina que o usuario esta tentando acessar
-		} else if( isset($_GET['logout']) ) {
-			Sessao::destroiSessao();
-			header('Location: '.DIR_RAIZ);
-			exit;
 		} else{
 			$this->validaAcesso(PAGINA_PADRAO);//Passa a pagina padrao de acesso
 		}
@@ -127,7 +126,8 @@ class ControllerFrame{
 		if( $erros = $novaConta->getErros() ){
 			return $erros;
 		}
-		return 1;
+		//retorna 1 se incluir com sucesso, ou 0 se der erro
+		return $novaConta->criaNovaConta($dados);
 	}
 	
 	/**

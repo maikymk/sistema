@@ -1,11 +1,12 @@
 <script type="text/javascript">
-	/**/
-	var link = "<?php echo DIR_RAIZ.DS.'categoria'.DS.DS;?>";//monta o link, agora apenas adiciona a acao e o id da categoria
+	var link = "<?php echo DIR_RAIZ.DS.'categorias'.DS.DS;?>";//monta o link principal
 	var erro = 'Erro! Tente novamente';
 	
 	$(document).ready(function () {
 		$('#nova-cat').click(function() {
 		    $(this).attr('href', '');
+		    $('#myModalCategoria .modal-title').html('Adicionar nova categoria');
+		    
 		    $('#myModalCategoria .modal-body').html(
 			    '<div class="form-group">'+
 			    	'<input type="text" name="nomeCat" class="form-control" id="input-nova-cat" maxlength="45" placeholder="Nome da categoria">'+
@@ -32,8 +33,8 @@
 						if( data ){
 						    var html = ''+
 						    '<tr id="lin-cat_'+data.id+'">'+
-								'<td class="mk-col-80" id="texto-categoria-'+data.id+'">'+data.nome+'</td>'+
-								'<td>'+
+								'<td class="col-md-9 col-sm-7 col-xs-6" id="texto-categoria-'+data.id+'">'+data.nome+'</td>'+
+								'<td class="col-md-9 col-sm-7 col-xs-6">'+
 									'<a href="'+link+'visualizar\\'+data.id+'" id="vz_'+data.id+'" class="btn btn-sm btn-info modal-vis-cat" data-toggle="modal" data-target="#myModalCategoria">Visualizar</a> '+
 									'<a href="'+link+'editar\\'+data.id+'" id="ed_'+data.id+'" class="btn btn-sm btn-warning edi-cat">Editar</a> '+
 									'<a href="'+link+'remover\\'+data.id+'" id="rm_'+data.id+'" class="btn btn-sm btn-danger rem-cat">Apagar</a> '+
@@ -43,26 +44,17 @@
 							$('#table-categorias').append(html);
 							
 							$(".modal-vis-cat").click(function(){
-							    var id = $(this).attr('id').split('_');
-							    id = id[1];
-
 							    $(this).attr('href', '');
-							    visualizaModal(id);
+							    visualizaModal(this);
 							});
 							
 							$('.edi-cat').click(function() {
-							    var id = $(this).attr('id').split('_');
-							    id = id[1];
-
-							    editarCategoria(id);
+							    editarCategoria(this);
 							    return false;
 							});
 
 							$('.rem-cat').click(function() {
-								var id = $(this).attr('id').split('_');
-								id = id[1];
-
-								removerCategoria(id);
+								removerCategoria(this);
 								return false;
 							});
 						}
@@ -78,37 +70,35 @@
 		});
 		
 	    $(".modal-vis-cat").click(function(){
-		    var id = $(this).attr('id').split('_');
-		    id = id[1];
-
 		    $(this).attr('href', '');
-		    visualizaModal(id);
+		    visualizaModal(this);
 		});
 		
 		$('.edi-cat').click(function() {
-		    var id = $(this).attr('id').split('_');
-		    id = id[1];
-
-		    editarCategoria(id);
+		    editarCategoria(this);
 		    return false;
 		});
 
 		$('.rem-cat').click(function() {
-			var id = $(this).attr('id').split('_');
-			id = id[1];
-
-			removerCategoria(id);
+			removerCategoria(this);
 			return false;
 		});
 	});
 
-	function visualizaModal(id){
+	function visualizaModal(tag){
+	    var id = $(tag).attr('id').split('_');
+	    id = id[1];
+	    
 	    var texto = $('#texto-categoria-'+id).html();
+	    $('#myModalCategoria .modal-title').html('Visualizar categoria');
 	    $('#myModalCategoria .modal-body').html('<p>'+texto+'</p>');
 	    $('#myModalCategoria .modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>');
 	}
 	
-	function editarCategoria(id){
+	function editarCategoria(tag){
+	    var id = $(tag).attr('id').split('_');
+	    id = id[1];
+	    
 	    var texto = $('#texto-categoria-'+id).html();
 
 	    $('#texto-categoria-'+id).html('<input type="text" maxlength="45" class="form-control" id="edit-cat_'+id+'">').after(function() {
@@ -153,7 +143,10 @@
 		});
 	}
 	
-	function removerCategoria(id){
+	function removerCategoria(tag){
+	    var id = $(tag).attr('id').split('_');
+		id = id[1];
+		
 	    var linkRemover = link+"remover\/"+id+"\/aj";
 		$.post(linkRemover, {
 		    removerCat: 1
@@ -170,26 +163,26 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-11">
+		<div class="col-md-9 pull-left">
 			<h1>Categorias</h1>
 		</div>
-		<div class="col-md-1">
-			<a href="<?php echo DIR_RAIZ.'categoria'.DS.'adicionar';?>" class="btn btn-primary mk-mrg-tp-20" id="nova-cat" data-toggle="modal" data-target="#myModalCategoria">Nova</a>
+		<div class="col-md-3 pull-right mk-mar-bot-10 mk-txt-ali-rig">
+			<a href="<?php echo DIR_RAIZ.'categoria'.DS.'adicionar';?>" class="btn btn-primary mk-mar-top-20" id="nova-cat" data-toggle="modal" data-target="#myModalCategoria">Nova</a>
 		</div>
 	</div>
 	<div class="table-responsive">
 		<table id="table-categorias" class="table table-bordered col-md-12">
 			<tr>
-				<th class="mk-col-80">Nome categoria</th>
-				<th>A&ccedil;&otilde;es</th>
+				<th class="col-md-9 col-sm-7 col-xs-6">Nome categoria</th>
+				<th class="col-md-3 col-sm-5 col-xs-6">A&ccedil;&otilde;es</th>
 			</tr>
 			<?php foreach( $this->categorias as $cat ){ ?>
 			<tr id="lin-cat_<?php echo $cat['id'];?>">
-				<td class="mk-col-80" id="texto-categoria-<?php echo $cat['id'];?>"><?php echo html_entity_decode($cat['nome']);?></td>
-				<td>
-					<a href="<?php echo DIR_RAIZ.'categoria'.DS.'visualizar'.DS.$cat['id'];?>" id="vz_<?php echo $cat['id'];?>" class="btn btn-sm btn-info modal-vis-cat" data-toggle="modal" data-target="#myModalCategoria">Visualizar</a>
-					<a href="<?php echo DIR_RAIZ.'categoria'.DS.'editar'.DS.$cat['id'];?>" id="ed_<?php echo $cat['id'];?>" class="btn btn-sm btn-warning edi-cat">Editar</a>
-					<a href="<?php echo DIR_RAIZ.'categoria'.DS.'remover'.DS.$cat['id'];?>" id="rm_<?php echo $cat['id'];?>" class="btn btn-sm btn-danger rem-cat">Apagar</a>
+				<td class="col-md-9 col-sm-7 col-xs-6 mk-ver-ali-mid" id="texto-categoria-<?php echo $cat['id'];?>"><?php echo html_entity_decode($cat['nome']);?></td>
+				<td class="col-md-3 col-sm-5 col-xs-6">
+					<a href="<?php echo BASE.'categoria'.DS.'visualizar'.DS.$cat['id'];?>" id="vz_<?php echo $cat['id'];?>" class="btn btn-sm btn-info modal-vis-cat" data-toggle="modal" data-target="#myModalCategoria">Visualizar</a>
+					<a href="<?php echo BASE.'categoria'.DS.'editar'.DS.$cat['id'];?>" id="ed_<?php echo $cat['id'];?>" class="btn btn-sm btn-warning edi-cat">Editar</a>
+					<a href="<?php echo BASE.'categoria'.DS.'remover'.DS.$cat['id'];?>" id="rm_<?php echo $cat['id'];?>" class="btn btn-sm btn-danger rem-cat">Apagar</a>
 				</td>
 			</tr>
 			<?php }?>
@@ -202,7 +195,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 	          		<button type="button" class="close" data-dismiss="modal">&times;</button>
-	          		<h4 class="modal-title">Categoria</h4>
+	          		<h4 class="modal-title"></h4>
 	        	</div>
 	        	<div class="modal-body">
 	          		<p></p>

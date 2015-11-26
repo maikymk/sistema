@@ -1,4 +1,6 @@
 <script type="text/javascript">
+	var link = "<?php echo DIR_RAIZ.DS;?>";//monta o link
+	
 	$(document).ready(function () {
 		$('#formTelaLogin').submit(function() {
 			var nome = '';
@@ -21,7 +23,7 @@
 			if( $('#senha2NovaConta').val() )
 			    senha2 = $('#senha2NovaConta').val();
 
-			$.post('new-account', {
+			$.post(link+'new-account', {
 				nomeNovaConta: nome,
 				sobrenomeNovaConta: sobreNome,
 				dataNascimentoNovaConta: nascimento,
@@ -34,6 +36,9 @@
 			    
 				if( data == 1 ){
 					html = '<p class="msgLogin sucessoLogin bg-success">Tudo certo por aqui!! :)</p>';
+					window.location.href = link;
+				} else if( data == 0 ){
+				    html += '<p class="erroLogin bg-danger">Erro ao realizar o cadastro, tente novamente.</p>';
 				} else{
 					$.each(data, function(ind, val) {
 						html += '<p class="erroLogin bg-danger">'+val+'</p>';
@@ -80,7 +85,7 @@
 				<input type="password" id="senha2NovaConta" name="senha2NovaConta" class="text novaConta form-control" placeholder="Repita a senha"/>
 			</div>
 			<div class="row row-login form-group">
-				<a href="<?php echo DIR_RAIZ;?>" class="btn" id="link-normal">cancelar</a>
+				<a href="<?php echo BASE;?>" class="btn" id="link-normal">cancelar</a>
 				<input type="submit" name="submitNovaConta" class="submit submitConcluir btn btn-success" value="Cadastrar"/>
 			</div>
 		</form>

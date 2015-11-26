@@ -1,8 +1,14 @@
+<?php 
+	$categorias  = ((empty($_GET['page']) || strcasecmp($_GET['page'], 'categorias') == 0) ? 'class="active"' : "" );
+	$lancamentos = ((!empty($_GET['page']) && strcasecmp($_GET['page'], 'lancamentos') == 0) ? 'class="active"' : "" );
+	$relatorios  = ((!empty($_GET['page']) && strcasecmp($_GET['page'], 'relatorios') == 0) ? 'class="active"' : "" );
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 	<head>
-		<link rel="stylesheet" href="<?php echo CSS.'css.css'?>">
-		<link rel="stylesheet" href="<?php echo CSS.'bootstrap.css'?>">
+		<link rel="stylesheet" href="<?php echo CSS.'css.css';?>" type="text/css">
+		<link rel="stylesheet" href="<?php echo CSS.'bootstrap.css';?>" type="text/css">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 		<script type="text/javascript" src="<?php echo JS.'jquery-2.1.4.min.js'?>"></script>
 		<script type="text/javascript" src="<?php echo JS.'bootstrap.js'?>"></script>
@@ -19,16 +25,17 @@
 			            <span class="icon-bar"></span>
 			            <span class="icon-bar"></span>
 			          </button>
-			          <a class="navbar-brand" href="<?php echo DIR_RAIZ;?>">Sistema</a>
+			          <a class="navbar-brand" href="<?php echo BASE;?>">Sistema</a>
 			        </div>
 			        <div id="navbar" class="collapse navbar-collapse">
 			          	<?php if( Sessao::buscaSessao('email') ) {?>
 			          	<ul class="nav navbar-nav">
-			            	<li class="active"><a href="<?php echo DIR_RAIZ.'categorias'?>">Categorias</a></li>
-			            	<li><a href="<?php echo DIR_RAIZ.'lancamentos'?>">Lan&ccedil;amentos</a></li>
+			            	<li <?php echo $categorias;?>><a href="<?php echo BASE.'categorias'?>">Categorias</a></li>
+			            	<li <?php echo $lancamentos;?>><a href="<?php echo BASE.'lancamentos'?>">Lan&ccedil;amentos</a></li>
+			            	<li <?php echo $relatorios;?>><a href="<?php echo BASE.'relatorios'?>">Relat&oacute;rios</a></li>
 			          	</ul>
-			          	<ul class="nav navbar-nav pull-right">
-				        	<li><a id="logout" role="button" href="<?php echo DIR_RAIZ.'logout'?>">Logout</a></li>
+			          	<ul id="ul-logout" class="nav navbar-nav pull-right">
+				        	<li><a id="logout" role="button" href="<?php echo BASE.'logout'?>">Logout</a></li>
 				     	</ul>
 				     	<?php }?>
 			        </div>

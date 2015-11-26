@@ -1,6 +1,14 @@
 <?php
-require_once INTERFACE_APP.'controller.php';
-require_once INTERFACE_APP.'view.php';
+//Faz autoload nas pasta passadas como key para o array, e busca os arquivos que estao como chave, passando vazio busca todos da pasta
+$array_autoLoad = array(
+	INTERFACE_APP => array(),
+	APP.'Categorias'.DS => array('model.php', 'view.php')
+);
+	
+$autoLoad = new Autoload();
+$autoLoad->setDirAndFiles($array_autoLoad);
+//$autoLoad->setExtensions(array('.php'));
+$autoLoad->load();
 
 class ControllerCategorias implements InterfaceController{
 	private $view;
@@ -12,19 +20,12 @@ class ControllerCategorias implements InterfaceController{
 	private $acao;
 	
 	function __construct() {
-		$array_autoLoad = array(APP.'Categorias'.DS => array('model.php', 'view.php'));
-			
-		$autoLoad = new Autoload();
-		$autoLoad->setDirAndFiles($array_autoLoad);
-		//$autoLoad->setExtensions(array('.php'));
-		$autoLoad->load();
-		
 		$this->view  = new ViewCategoria();
 		$this->model = new ModelCategoria();
 	}
 	
 	/**
-	 * Metodo implementado da interface
+	 * Metodo implementado da interface define o comportamento do componente Categorias
 	 * 
 	 * {@inheritDoc}
 	 * @see InterfaceController::handle()

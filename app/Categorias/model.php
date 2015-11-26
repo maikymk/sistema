@@ -9,8 +9,11 @@ class ModelCategoria{
 	 * @return array
 	 */
 	function visualizarCategorias($id=null){
-		$sql = "SELECT * FROM categoria ".(!empty($id) ? "WHERE id = ".$id : "");
-		return Query::query($sql);
+		$sql = "SELECT * FROM categoria WHERE ".(!empty($id) ? "id = ".$id." AND status=1" : "status=1");
+		if( $dados = Query::query($sql) ){
+			return $dados;
+		}
+		return array();
 	}
 	
 	/**
@@ -40,13 +43,13 @@ class ModelCategoria{
 	}
 	
 	/**
-	 * Remove uma categoria
+	 * Seta o status da categoria como 0, assim ela nao e mais exibida
 	 *
 	 * @param int $id Id da categoria a ser alterada
 	 * @return number|boolean
 	 */
 	function removerCategoria($id){
-		$sql = "DELETE FROM categoria WHERE id=".$id."";
+		$sql = "UPDATE categoria SET status=0 WHERE id=".$id."";
 		return Query::query($sql);
 	}
 }
