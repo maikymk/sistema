@@ -2,6 +2,8 @@
 	$categorias  = ((empty($_GET['page']) || strcasecmp($_GET['page'], 'categorias') == 0) ? 'class="active"' : "" );
 	$lancamentos = ((!empty($_GET['page']) && strcasecmp($_GET['page'], 'lancamentos') == 0) ? 'class="active"' : "" );
 	$relatorios  = ((!empty($_GET['page']) && strcasecmp($_GET['page'], 'relatorios') == 0) ? 'class="active"' : "" );
+	
+	$nomeUsuario = (!empty(Usuario::getNome()) ? Usuario::getNome()[0]['nome'] : '');
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +37,7 @@
 			            	<li <?php echo $relatorios;?>><a href="<?php echo BASE.'relatorios'?>">Relat&oacute;rios</a></li>
 			          	</ul>
 			          	<ul id="ul-logout" class="nav navbar-nav pull-right">
+			          		<li><label id="nomeUser" class="mk-mar-top-15 color-fff">Bem vindo, <?php echo $nomeUsuario;?></label></li>
 				        	<li><a id="logout" role="button" href="<?php echo BASE.'logout'?>">Logout</a></li>
 				     	</ul>
 				     	<?php }?>

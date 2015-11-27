@@ -12,10 +12,12 @@ class ModelLancamentos{
 	 * @return array
 	 */
 	function visualizarLancamentos($tipo=null){
-		$where = " WHERE c.status=1 AND l.categoria=c.id AND l.usuario=u.id AND l.tipo=r.id ".(!empty($tipo) ? "AND l.tipo='".$tipo."'" : "");
-		$sql = "SELECT l.id, l.descricao, l.valor, l.data, c.nome categoria, r.nome tipo, u.nome usuario FROM lancamento l, categoria c, usuario u, tipo_receita r ".$where;
+		$sql = "SELECT l.id, l.descricao, l.valor, l.data, c.nome categoria, r.nome tipo, u.nome usuario FROM lancamento l, categoria c, usuario u, tipo_receita r WHERE c.status=1 AND l.categoria=c.id AND l.usuario=u.id AND l.tipo=r.id";
+		if( !empty($tipo) ){
+			$sql .= "AND l.tipo='".$tipo."'";
+		}
 		
-		if( $dados = Query::query($sql) ){
+		if( $dados = Query::query($sql, $tipo) ){
 			foreach( $dados as $key=>$dado ){
 				$dados[$key]['data'] = date('d/m/Y', strtotime($dado['data']));
 				$dados[$key]['valor'] = number_format($dado['valor'], 2, ",",".");
@@ -47,8 +49,8 @@ class ModelLancamentos{
 	
 	function verificaLancamentoUsuario($data, $descricao){
 		$idUsuario = $this->getIdUser();
-		$sql = "SELECT data FROM lancamento WHERE data='".$data."' AND descricao='".$descricao."' AND usuario=".$idUsuario."";
-		$result = Query::query($sql);
+		$sql = "SELECT data FROM lancamento WHERE data=? AND descricao=? AND usuario=?";
+		$result = Query::query($sql, array($data, $descricao, $idUsuario));
 		
 		if( empty($result) ){
 			return true;
@@ -114,7 +116,7 @@ class ModelLancamentos{
 	 * @return int
 	 */
 	function getIdUser(){
-		$idUsuario = Query::query("SELECT id FROM usuario WHERE email like '".Sessao::buscaSessao('email')."'");
+		$idUsuario = Query::query("SELECT id FROM usuario WHERE email like ?", Sessao::buscaSessao('email'));
 		return $idUsuario[0]['id'];
 	}
 	
@@ -176,12 +178,19 @@ class ModelLancamentos{
 		$idUsuario = $this->getIdUser();
 		
 		$valor = str_replace(array('.', ','), array('', '.'), $dados['valor']);
-		$values = " '".$dados['descricao']."', ".$valor.", '".$dados['data']."', ".$dados['categoria'].", ".$dados['tipo'].", ".$idUsuario;
+		$values = array(
+			$dados['descricao'],
+			$valor,
+			$dados['data'],
+			$dados['categoria'],
+			$dados['tipo'],
+			$idUsuario
+		);
 		
-		$sql = "INSERT INTO lancamento(descricao, valor, data, categoria, tipo, usuario) VALUES (".$values.")";
+		$sql = "INSERT INTO lancamento(descricao, valor, data, categoria, tipo, usuario) VALUES (?, ?, ?, ?, ?, ?)";
 		
-		if ( Query::query($sql) ){
-			return QUERY::getUltimoId();
+		if ( $id = Query::query($sql, $values) ){
+			return $id;
 		}
 		return 0;
 	}

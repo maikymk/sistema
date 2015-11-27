@@ -12,17 +12,10 @@ body{ padding-top: 50px; }
 #logout:hover{ color: #f4f4f4 !important; }
 .no-padding{ padding: 0 !important; }
 
-/**********************************
- ************* MKBOOK *************
- *********************************/
-#perfil{ width: 60%; margin: auto; border: 1px solid #ccc; }
-.div-capa{ text-align: center; }
-#foto_capa{ margin: auto; width: 100%; }
-#foto_perfil{ margin-top: -65px; border: 2px solid #FFF; }
-.nome_perfil{ text-align: left; }
-.change_foto_perfil{ cursor: pointer; }
-.change_foto_perfil:hover{ color: #FFF; background: #800; display: block; border-radius: 10px; }
-#span_foto_perfil{ background: #FFF; display: block; margin: -50% auto 43%; width: 95%; border: 1px solid #CCC; position: relative; cursor: pointer; }
+/*****************************************************
+ ************************ MENU ***********************
+ ****************************************************/
+#nomeUser{ margin-right: 30px; }
 
 /**********************************
  ******* CLASSES ESPECIAIS ********
@@ -36,6 +29,7 @@ body{ padding-top: 50px; }
 .mk-pad-rig-lef-15{ padding: 0 15px !important; }
 .mk-mar-bot-10{ margin-bottom: 10px !important; }
 .mk-mar-top-20{ margin-top: 20px !important; }
+.mk-mar-top-15{ margin-top: 15px !important; }
 .mk-mar-aut{ margin: auto; }
 .mk-wid-100-prc{ width: 100%; }
 .mk-wid-50-prc{ width: 50%; }

@@ -10,10 +10,14 @@ class ModelRelatorios{
 	 * @return $array
 	 */
 	function relatoriosPorCategoria($tipo=null){
-		$where = " WHERE c.status=1 AND l.categoria=c.id AND l.usuario=u.id AND l.tipo=r.id ".(!empty($tipo) ? "AND l.tipo=".$tipo."" : "");
-		$sql = "SELECT l.id, l.descricao, l.valor, l.data, c.nome categoria, r.nome tipo, u.nome usuario FROM lancamento l, categoria c, usuario u, tipo_receita r ".$where;
+		$sql = "SELECT l.id, l.descricao, l.valor, l.data, c.nome categoria, r.nome tipo, u.nome usuario 
+				FROM lancamento l, categoria c, usuario u, tipo_receita r 
+				WHERE c.status=1 AND l.categoria=c.id AND l.usuario=u.id AND l.tipo=r.id";
+		if( !empty($tipo) ){
+			$sql .= " AND l.tipo=".$tipo;
+		}
 		
-		if( $dados = Query::query($sql) ){
+		if( $dados = Query::query($sql, $tipo) ){
 			$result = array();
 			foreach( $dados as $key=>$dado ){
 				$result[$dado['categoria']][] = array(

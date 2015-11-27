@@ -9,8 +9,14 @@ class ModelCategoria{
 	 * @return array
 	 */
 	function visualizarCategorias($id=null){
-		$sql = "SELECT * FROM categoria WHERE ".(!empty($id) ? "id = ".$id." AND status=1" : "status=1");
-		if( $dados = Query::query($sql) ){
+		$id  = null;
+		$sql = "SELECT * FROM categoria WHERE status=1";
+		
+		if( !empty($id) ){
+			$sql .= " AND id = ?";
+		}
+		
+		if( $dados = Query::query($sql, $id) ){
 			return $dados;
 		}
 		return array();
@@ -23,9 +29,9 @@ class ModelCategoria{
 	 * @return array
 	 */
 	function adicionarCategoria($nome){
-		$sql = "INSERT INTO categoria(nome) VALUES('".$nome."')";
-		if( Query::query($sql) ){
-			return QUERY::getUltimoId();
+		$sql = "INSERT INTO categoria(nome) VALUES(?)";
+		if( $id = Query::query($sql, $nome) ){
+			return $id;
 		}
 		return 0;
 	}
@@ -38,8 +44,8 @@ class ModelCategoria{
 	 * @return number|boolean
 	 */
 	function editarCategoria($id, $nome){
-		$sql = "UPDATE categoria SET nome = '".$nome."' WHERE id=".$id."";
-		return Query::query($sql);
+		$sql = "UPDATE categoria SET nome=? WHERE id=?";
+		return Query::query($sql, array($nome, $id));
 	}
 	
 	/**
@@ -49,7 +55,7 @@ class ModelCategoria{
 	 * @return number|boolean
 	 */
 	function removerCategoria($id){
-		$sql = "UPDATE categoria SET status=0 WHERE id=".$id."";
-		return Query::query($sql);
+		$sql = "UPDATE categoria SET status=0 WHERE id=?";
+		return Query::query($sql, $id);
 	}
 }

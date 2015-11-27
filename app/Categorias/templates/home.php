@@ -33,7 +33,7 @@
 						if( data ){
 						    var html = ''+
 						    '<tr id="lin-cat_'+data.id+'">'+
-								'<td class="col-md-9 col-sm-7 col-xs-6" id="texto-categoria-'+data.id+'">'+data.nome+'</td>'+
+								'<td class="col-md-9 col-sm-7 col-xs-6 mk-ver-ali-mid" id="texto-categoria-'+data.id+'">'+data.nome+'</td>'+
 								'<td class="col-md-9 col-sm-7 col-xs-6">'+
 									'<a href="'+link+'visualizar\\'+data.id+'" id="vz_'+data.id+'" class="btn btn-sm btn-info modal-vis-cat" data-toggle="modal" data-target="#myModalCategoria">Visualizar</a> '+
 									'<a href="'+link+'editar\\'+data.id+'" id="ed_'+data.id+'" class="btn btn-sm btn-warning edi-cat">Editar</a> '+

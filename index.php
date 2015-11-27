@@ -4,6 +4,7 @@ require_once LIB.DS.'autoload.php';
 
 $array = array(
 	DIR_RAIZ => array('model.php', 'view.php'),
+	SYSTEM => array('query.php'),
 	LIB => ''
 );
 
@@ -19,9 +20,10 @@ class ControllerFrame{
 	public  $view;
 	
 	function __construct(){
-		if( !Sessao::verificaSessao() )
+		if( !Sessao::verificaSessao() ){
 			Sessao::iniciaSessao();
-			
+		}
+		
 		$this->model = new ModelFrame;
 		$this->view  = new ViewFrame;
 	}
@@ -51,10 +53,10 @@ class ControllerFrame{
 			$erroNovaConta = null;
 			
 			if( isset($_POST['submitNovaConta']) ){//sem ajax
-				$this->validaNovaConta($_POST);
+				$this->model->validaNovaConta($_POST);
 			}
 			else if( isset($_POST['validaNovaConta']) ){//ajax
-				$dados = $this->validaNovaConta($_POST);
+				$dados = $this->model->validaNovaConta($_POST);
 				echo json_encode($dados);
 				exit;
 			}
@@ -116,21 +118,6 @@ class ControllerFrame{
 	}
 	
 	/**
-	 * Valida os dados do novo cadastro
-	 * 
-	 * @param array $dados Dados a serem validados
-	 */
-	private function validaNovaConta($dados){
-		$novaConta = new ValidaNovaConta;
-		$novaConta->validaCampos($dados);
-		if( $erros = $novaConta->getErros() ){
-			return $erros;
-		}
-		//retorna 1 se incluir com sucesso, ou 0 se der erro
-		return $novaConta->criaNovaConta($dados);
-	}
-	
-	/**
 	 * Seta a pagina que sera mostrada ao usuario na variavel $container
 	 * 
 	 * @param String $container Tela a ser exibida
@@ -145,31 +132,11 @@ class ControllerFrame{
 	 * @param String $erro Recebe um erro e valida ele pra apresentar sua tela. O erro padrao e 500 (Erro no servidor)
 	 */
 	private function verificaErro($erro=ERRO_PADRAO){
-		$telaErro;
-		
-		switch( $erro ){
-			case '400':
-				$telaErro = '400';
-				break;
-					
-			case '401':
-				$telaErro = '401';
-				break;
-		
-			case '403':
-				$telaErro = '403';
-				break;
-		
-			case '404':
-				$telaErro = '404';
-				break;
-		
-			case '500':
-				$telaErro = '500';
-				break;
-		}
-		$telaErro = TELAS_ERRO.$telaErro.'.php';//caminho das telas de erro.nome da tela de erro.extensao
-		$this->setContainer($this->view->telaErro($telaErro));//salva no conteudo da pagina a tela de erro
+		$telaErro = $this->model->validaErro($erro);
+		//caminho das telas de erro.nome da tela de erro.extensao
+		$telaErro = TELAS_ERRO.$telaErro.'.php';
+		//salva no conteudo da pagina a tela de erro
+		$this->setContainer($this->view->telaErro($telaErro));
 	}
 }
 
