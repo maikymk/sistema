@@ -7,8 +7,8 @@
  */
 
 abstract class DAOAbstractJson{
-	private $arquivo;
-	private $dadosArquivo;
+	protected $arquivo;
+	protected $dadosArquivo='';
 	
 	/**
 	 * Abre o arquivo
@@ -30,7 +30,7 @@ abstract class DAOAbstractJson{
 	 */
 	protected function leArquivo(){
 		$json = file_get_contents(JSON);
-		return json_decode($json, true);
+		$this->dadosArquivo = json_decode($json, true);
 	}
 	
 	/**

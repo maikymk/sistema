@@ -1,8 +1,5 @@
 <?php
 class DAOJsonRelatorios extends DAOAbstractJson implements DAOAbstractRelatorios {
-	private $arquivo;
-	private $dadosArquivo='';
-	
 	/**
 	 * Busca todos os dados de lancamento e monta um relatorio por categorias
 	 *
@@ -11,7 +8,7 @@ class DAOJsonRelatorios extends DAOAbstractJson implements DAOAbstractRelatorios
 	 */
 	function relatoriosPorCategoria($tipo=null){
 		$this->abreArquivo();
-		$this->dadosArquivo = $this->leArquivo();
+		$this->leArquivo();
 		
 		$result = array();
 		
@@ -116,7 +113,7 @@ class DAOJsonRelatorios extends DAOAbstractJson implements DAOAbstractRelatorios
 	 */
 	function buscaTipos(){
 		$this->abreArquivo();
-		$this->dadosArquivo = $this->leArquivo();
+		$this->leArquivo();
 		
 		$dados = array();
 		if( $this->existeDados('tipo_receita') ){

@@ -1,7 +1,5 @@
 <?php
-class DAOBdCategorias{
-	function __construct(){}
-	
+class DAOBdCategorias implements DAOAbstractCategorias{
 	/**
 	 * Busca as categorias no BD
 	 * 
