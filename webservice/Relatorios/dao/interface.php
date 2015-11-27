@@ -1,5 +1,5 @@
 <?php
-abstract class DAOAbstractRelatorios{
+interface DAOAbstractRelatorios{
 	
 	/**
 	 * Busca todos os dados de lancamento e monta um relatorio por categorias
@@ -7,12 +7,12 @@ abstract class DAOAbstractRelatorios{
 	 * @param String $tipo Tipo da receita a ser exibida
 	 * @return $array
 	 */
-	abstract function relatoriosPorCategoria($tipo=null);
+	function relatoriosPorCategoria($tipo=null);
 	
 	/**
 	 * Busca as receitas que estao visiveis
 	 *
 	 * @return boolean|1
 	 */
-	abstract function buscaTipos();
+	function buscaTipos();
 }

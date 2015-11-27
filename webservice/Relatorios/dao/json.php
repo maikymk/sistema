@@ -1,20 +1,8 @@
 <?php
-class DAOJsonRelatorios extends DAOAbstractRelatorios implements DAOInterfaceJson {
+class DAOJsonRelatorios extends DAOAbstractJson implements DAOAbstractRelatorios {
 	private $arquivo;
 	private $dadosArquivo='';
 	
-	/**
-	 * Abre o arquivo
-	 */
-	function abreArquivo(){
-		if( is_file(JSON) ){
-			//abre somente para leitura
-			$this->arquivo = fopen(JSON, "r");
-		} else{
-			//tenta criar como leitura e gravacao 
-			fopen(JSON, "a+");
-		}
-	}
 	/**
 	 * Busca todos os dados de lancamento e monta um relatorio por categorias
 	 *
@@ -23,7 +11,7 @@ class DAOJsonRelatorios extends DAOAbstractRelatorios implements DAOInterfaceJso
 	 */
 	function relatoriosPorCategoria($tipo=null){
 		$this->abreArquivo();
-		$this->leArquivo();
+		$this->dadosArquivo = $this->leArquivo();
 		
 		$result = array();
 		
@@ -44,6 +32,12 @@ class DAOJsonRelatorios extends DAOAbstractRelatorios implements DAOInterfaceJso
 		return $result;
 	}
 	
+	/**
+	 * Seta os dados dos lancamentos
+	 * 
+	 * @param array() $dado Dados a serem setados
+	 * @return array()
+	 */
 	private function setDadosLancamento($dado){
 		$result = array();
 		if( ($categoria = $this->getNome('categoria', $dado['categoria'])) && ($nomeTipo = $this->getNome('tipo_receita', $dado['tipo'])) ){
@@ -122,7 +116,7 @@ class DAOJsonRelatorios extends DAOAbstractRelatorios implements DAOInterfaceJso
 	 */
 	function buscaTipos(){
 		$this->abreArquivo();
-		$this->leArquivo();
+		$this->dadosArquivo = $this->leArquivo();
 		
 		$dados = array();
 		if( $this->existeDados('tipo_receita') ){
@@ -131,20 +125,5 @@ class DAOJsonRelatorios extends DAOAbstractRelatorios implements DAOInterfaceJso
 		
 		$this->fechaArquivo();
 		return $dados;
-	}
-	
-	/**
-	 * Le todos os dados de um arquivo
-	 */
-	function leArquivo(){
-		$json = file_get_contents(JSON);
-		$this->dadosArquivo = json_decode($json, true);
-	}
-	
-	/**
-	 * Fecha o arquivo
-	 */
-	function fechaArquivo(){
-		fclose($this->arquivo);
 	}
 }
