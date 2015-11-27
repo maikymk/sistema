@@ -1,0 +1,5 @@
+{
+"categoria":[{"id":"9","nome":"energia","status":"1"}, {"id":"10","nome":"&aacute;gua","status":"1"}], 
+"lancamentos":[{"id":"36","descricao":"teste","valor":"5","data":"1994-10-22","categoria":"9","tipo":"1","usuario":"1"}],
+"tipo_receita":[{"id":"1","nome":"receita","status":"1"}, {"id":"2","nome":"despesa","status":"1"}]
+}

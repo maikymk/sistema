@@ -151,7 +151,7 @@ class ControllerCategorias implements InterfaceController{
 		if( isset($_POST['editarCat']) ){
 			$nomeCat = htmlentities(strip_tags($_POST['nomeCat'], '<p><h1>'));//remove qualquer insercao que o usuario tentou fazer e recupera o nome
 			
-			if( $this->model->editarCategoria($this->idCategoria, $nomeCat) ){
+			if( $this->model->editarCategoria($nomeCat, $this->idCategoria) ){
 				return array('id'=>$this->idCategoria, 'nome'=>html_entity_decode($nomeCat));
 			}
 		}

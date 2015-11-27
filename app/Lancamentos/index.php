@@ -146,9 +146,6 @@ class ControllerLancamentos implements InterfaceController{
 	 */
 	private function verificaAdicionar(){
 		if( isset($_POST['adicionarLancamento']) ){
-			//busca o id do usuario logado
-			$idUser = $this->model->getIdUser();
-			
 			//valida os dados enviados pelo usuario
 			$dados = $this->model->validaDados($_POST);
 			

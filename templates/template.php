@@ -3,7 +3,7 @@
 	$lancamentos = ((!empty($_GET['page']) && strcasecmp($_GET['page'], 'lancamentos') == 0) ? 'class="active"' : "" );
 	$relatorios  = ((!empty($_GET['page']) && strcasecmp($_GET['page'], 'relatorios') == 0) ? 'class="active"' : "" );
 	
-	$nomeUsuario = (!empty(Usuario::getNome()) ? Usuario::getNome()[0]['nome'] : '');
+	$nomeUsuario = (!empty(Usuario::getNome()) ? Usuario::getNome() : '');
 ?>
 
 <!DOCTYPE html>

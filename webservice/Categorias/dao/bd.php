@@ -1,12 +1,6 @@
 <?php
-require_once WEB_SERVICE.'Categorias'.DS.'index.php';
-
-class ModelCategoria{
-	private $webService;
-	
-	function __construct(){
-		$this->webService = new ControllerWebserviceCategorias;
-	}
+class DAOBdCategorias{
+	function __construct(){}
 	
 	/**
 	 * Busca as categorias no BD
@@ -15,7 +9,17 @@ class ModelCategoria{
 	 * @return array
 	 */
 	function visualizarCategorias($id=null){
-		return $this->webService->visualizarCategorias($id);
+		$id  = null;
+		$sql = "SELECT * FROM categoria WHERE status=1";
+		
+		if( !empty($id) ){
+			$sql .= " AND id = ?";
+		}
+		
+		if( $dados = Query::query($sql, $id) ){
+			return $dados;
+		}
+		return array();
 	}
 	
 	/**
@@ -25,7 +29,11 @@ class ModelCategoria{
 	 * @return array
 	 */
 	function adicionarCategoria($nome){
-		return $this->webService->adicionarCategoria($nome);
+		$sql = "INSERT INTO categoria(nome) VALUES(?)";
+		if( $id = Query::query($sql, $nome) ){
+			return $id;
+		}
+		return 0;
 	}
 	
 	/**
@@ -36,7 +44,8 @@ class ModelCategoria{
 	 * @return number|boolean
 	 */
 	function editarCategoria($nome, $id){
-		return $this->webService->editarCategoria($nome, $id);
+		$sql = "UPDATE categoria SET nome=? WHERE id=?";
+		return Query::query($sql, array($nome, $id));
 	}
 	
 	/**
@@ -46,6 +55,7 @@ class ModelCategoria{
 	 * @return number|boolean
 	 */
 	function removerCategoria($id){
-		return $this->webService->removerCategoria($id);
+		$sql = "UPDATE categoria SET status=0 WHERE id=?";
+		return Query::query($sql, $id);
 	}
 }
