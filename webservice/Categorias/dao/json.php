@@ -8,7 +8,6 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias
 	 * @return array
 	 */
 	function visualizarCategorias($id=null){
-		//SELECT * FROM categoria WHERE status=1;
 		$this->abreArquivo();
 		$this->leArquivo();
 		
@@ -39,17 +38,37 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias
 	}
 	
 	/**
-	 * Cria um nova categorias no BD
+	 * Cria um nova categorias no json
 	 *
 	 * @param String $nome Nome da categoria a ser criada
 	 * @return array
 	 */
 	function adicionarCategoria($nome){
+		$this->abreArquivo();
+		$this->leArquivo();
+		
+		$ok = 0;
+		if( $this->verificaExisteArrayCategoria() ){
+			$lastArray = end($this->dadosArquivo['categoria']); 
+			$lastId = $lastArray['id'] + 1;
+			$this->dadosArquivo['categoria'][] = array('id'=>$lastId, 'nome'=>$nome, 'status'=>1);
+			
+			if( $this->salvaArquivo($this->dadosArquivo) ){
+				$ok++;
+			}
+		}
+		
+		$this->fechaArquivo();
+		return (($ok > 0) ? $lastId : '' );
+		
+		/*
+		$result = array();
 		$sql = "INSERT INTO categoria(nome) VALUES(?)";
 		if( $id = Query::query($sql, $nome) ){
 			return $id;
 		}
 		return 0;
+		*/
 	}
 	
 	/**
