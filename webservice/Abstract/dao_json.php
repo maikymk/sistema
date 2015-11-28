@@ -45,6 +45,7 @@ abstract class DAOAbstractJson{
 		$this->abreArquivo();
 		
 		$json = json_encode($array);
+		
 		try{
 			fwrite($this->arquivo, $json);
 			return 1;

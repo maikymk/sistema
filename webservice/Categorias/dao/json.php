@@ -60,15 +60,6 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias
 		
 		$this->fechaArquivo();
 		return (($ok > 0) ? $lastId : '' );
-		
-		/*
-		$result = array();
-		$sql = "INSERT INTO categoria(nome) VALUES(?)";
-		if( $id = Query::query($sql, $nome) ){
-			return $id;
-		}
-		return 0;
-		*/
 	}
 	
 	/**
@@ -79,8 +70,27 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias
 	 * @return number|boolean
 	 */
 	function editarCategoria($nome, $id){
-		$sql = "UPDATE categoria SET nome=? WHERE id=?";
-		return Query::query($sql, array($nome, $id));
+		$this->abreArquivo();
+		$this->leArquivo();
+		
+		$ok1 = 0;
+		$ok  = 0;
+		if( $this->verificaExisteArrayCategoria() ){
+			foreach( $this->dadosArquivo['categoria'] as $key=>$categoria ){
+				if( $categoria['id'] == $id ){//verifica se o id e igual ao que foi enviado, se for altera o nome
+					$this->dadosArquivo['categoria'][$key]['nome'] = $nome;
+					$ok1++;
+				}
+			}
+			if( $ok1 > 0 ){//se tiver encontrado o id passado pelo usuario, faz atualizacao nos dados do arquivo
+				if( $this->salvaArquivo($this->dadosArquivo) ){
+					$ok++;
+				}
+			}
+		}
+		
+		$this->fechaArquivo();
+		return (($ok > 0) ? 1 : '' );
 	}
 	
 	/**
@@ -90,7 +100,28 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias
 	 * @return number|boolean
 	 */
 	function removerCategoria($id){
-		$sql = "UPDATE categoria SET status=0 WHERE id=?";
-		return Query::query($sql, $id);
+		//$sql = "UPDATE categoria SET status=0 WHERE id=?";
+		
+		$this->abreArquivo();
+		$this->leArquivo();
+		
+		$ok1 = 0;
+		$ok  = 0;
+		if( $this->verificaExisteArrayCategoria() ){
+			foreach( $this->dadosArquivo['categoria'] as $key=>$categoria ){
+				if( $categoria['id'] == $id ){//verifica se o id e igual ao que foi enviado, se for altera o nome
+					$this->dadosArquivo['categoria'][$key]['status'] = 0;
+					$ok1++;
+				}
+			}
+			if( $ok1 > 0 ){//se tiver encontrado o id passado pelo usuario, faz atualizacao nos dados do arquivo
+				if( $this->salvaArquivo($this->dadosArquivo) ){
+					$ok++;
+				}
+			}
+		}
+		
+		$this->fechaArquivo();
+		return (($ok > 0) ? 1 : '' );
 	}
 }
