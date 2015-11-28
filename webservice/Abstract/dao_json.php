@@ -7,7 +7,7 @@
  */
 
 abstract class DAOAbstractJson{
-	protected $arquivo;
+	protected $arquivo = null;
 	protected $dadosArquivo='';
 	private   $tipoAbreArquivo='r';//por padrao so abre o arquivo pra leitura
 	
@@ -44,6 +44,17 @@ abstract class DAOAbstractJson{
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Verifica se o arquivo ja foi aberto, se nao tiver sido abre ele e ja fecha, apenas para armazenar os dados na varivavel
+	 */
+	protected function verificaArquivoAberto(){
+		if( $this->arquivo === null ){
+			$this->abreArquivo();
+			$this->leArquivo();
+			$this->fechaArquivo();
+		}
 	}
 	
 	/**

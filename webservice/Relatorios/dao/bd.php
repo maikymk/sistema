@@ -9,7 +9,7 @@ class DAOBdRelatorios implements DAOInterfaceRelatorios {
 	 */
 	function relatoriosPorCategoria($tipo=null){
 		$sql = "SELECT l.id, l.descricao, l.valor, l.data, c.nome categoria, r.nome tipo, u.nome usuario
-				FROM lancamento l, categoria c, usuario u, tipo_receita r
+				FROM lancamento l, categoria c, usuario u, tipo_lancamento r
 				WHERE c.status=1 AND l.categoria=c.id AND l.usuario=u.id AND l.tipo=r.id";
 		if( !empty($tipo) ){
 			$sql .= " AND l.tipo=".$tipo;
@@ -39,7 +39,7 @@ class DAOBdRelatorios implements DAOInterfaceRelatorios {
 	 * @return boolean|1
 	 */
 	function buscaTipos(){
-		$sql = "SELECT nome, id FROM tipo_receita WHERE status=1 ORDER BY nome ASC";
+		$sql = "SELECT nome, id FROM tipo_lancamento WHERE status=1 ORDER BY nome ASC";
 		return Query::query($sql);
 	}
 }

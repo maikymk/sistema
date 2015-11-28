@@ -39,7 +39,7 @@ class DAOJsonRelatorios extends DAOAbstractJson implements DAOInterfaceRelatorio
 	 */
 	private function setDadosLancamento($dado){
 		$result = array();
-		if( ($categoria = $this->getNome('categoria', $dado['categoria'])) && ($nomeTipo = $this->getNome('tipo_receita', $dado['tipo'])) ){
+		if( ($categoria = $this->getNome('categoria', $dado['categoria'])) && ($nomeTipo = $this->getNome('tipo_lancamento', $dado['tipo'])) ){
 			$result[$categoria][] = array(
 				'id' => $dado['id'],
 				'descricao' => $dado['descricao'],
@@ -118,8 +118,8 @@ class DAOJsonRelatorios extends DAOAbstractJson implements DAOInterfaceRelatorio
 		$this->leArquivo();
 		
 		$dados = array();
-		if( $this->existeDados('tipo_receita') ){
-			$dados = $this->dadosArquivo['tipo_receita'];
+		if( $this->existeDados('tipo_lancamento') ){
+			$dados = $this->dadosArquivo['tipo_lancamento'];
 		}
 		
 		$this->fechaArquivo();
