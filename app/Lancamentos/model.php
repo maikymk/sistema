@@ -69,11 +69,11 @@ class ModelLancamentos{
 	}
 	
 	/**
-	 * Cria um nova categorias no BD
+	 * Cria um nova categorias
 	 *
-	 * @param int $idUsuario Id do usuario a ser salvo no BD
+	 * @param int $idUsuario Id do usuario a ser salvo 
 	 * @param String $nome Nome da categoria a ser criada
-	 * @return array
+	 * @return int
 	 */
 	function adicionarLancamentos($dados){
 		return $this->webService->adicionarLancamentos($dados);
