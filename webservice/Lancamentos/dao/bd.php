@@ -1,6 +1,7 @@
 <?php
-class DAOBdLancamentos{
+class DAOBdLancamentos implements DAOInterfaceLancamentos{
 	private $erro = array();
+	
 	/**
 	 * Busca as categorias no BD
 	 *
@@ -8,7 +9,7 @@ class DAOBdLancamentos{
 	 * @return array
 	 */
 	function visualizarLancamentos($tipo=null){
-		$sql = "SELECT l.id, l.descricao, l.valor, l.data, c.nome categoria, r.nome tipo, u.nome usuario FROM lancamento l, categoria c, usuario u, tipo_receita r WHERE c.status=1 AND l.categoria=c.id AND l.usuario=u.id AND l.tipo=r.id";
+		$sql = "SELECT l.id, l.descricao, l.valor, l.data, c.nome categoria, r.nome tipo, u.nome usuario FROM lancamento l, categoria c, usuario u, tipo_lancamento r WHERE c.status=1 AND l.categoria=c.id AND l.usuario=u.id AND l.tipo=r.id";
 		if( !empty($tipo) ){
 			$sql .= "AND l.tipo='".$tipo."'";
 		}
@@ -39,7 +40,7 @@ class DAOBdLancamentos{
 	 * @return array|boolean|1
 	 */
 	function getReceitas(){
-		$sql = "SELECT nome, id FROM tipo_receita WHERE status=1 ORDER BY nome ASC";
+		$sql = "SELECT nome, id FROM tipo_lancamento WHERE status=1 ORDER BY nome ASC";
 		return Query::query($sql);
 	}
 	
@@ -167,11 +168,10 @@ class DAOBdLancamentos{
 	}
 	
 	/**
-	 * Cria um nova categorias no BD
+	 * Cria um nova categoria
 	 *
-	 * @param int $idUsuario Id do usuario a ser salvo no BD
-	 * @param String $nome Nome da categoria a ser criada
-	 * @return array
+	 * @param array() $dados $dados a serem salvos
+	 * @return int
 	 */
 	function adicionarLancamentos($dados){
 		$idUsuario = $this->getIdUser();

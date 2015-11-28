@@ -2,7 +2,7 @@
 //Faz autoload nas pasta passadas como key para o array, e busca os arquivos que estao como chave, passando vazio busca todos da pasta
 $array_autoLoad = array(
 	WEB_SERVICE.'Abstract'.DS => array('controller.php', 'dao_json.php'),
-	WEB_SERVICE.'Lancamentos'.DS.'dao'.DS => array(strtolower(SALVA_DADOS).'.php')
+	WEB_SERVICE.'Lancamentos'.DS.'dao'.DS => array('interface.php', strtolower(SALVA_DADOS).'.php')
 );
 
 $autoLoad = new Autoload();
