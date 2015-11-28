@@ -1,5 +1,5 @@
 <?php
-class DAOBdRelatorios implements DAOAbstractRelatorios {
+class DAOBdRelatorios implements DAOInterfaceRelatorios {
 	
 	/**
 	 * Busca todos os dados de lancamento e monta um relatorio por categorias

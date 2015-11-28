@@ -1,6 +1,6 @@
 <?php
 
-class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias{
+class DAOJsonCategorias extends DAOAbstractJson implements DAOInterfaceCategorias{
 	/**
 	 * Busca as categorias no BD
 	 *
@@ -13,7 +13,7 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias
 		
 		$result = array();
 		
-		if( $this->verificaExisteArrayCategoria() ){
+		if( $this->verificaExisteArray('categoria') ){
 			foreach( $this->dadosArquivo['categoria'] as $key=>$categoria ){
 				if( $categoria['status'] == 1 ){
 					$result[$key] = $this->dadosArquivo['categoria'][$key];
@@ -23,18 +23,6 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias
 		
 		$this->fechaArquivo();
 		return $result;
-	}
-	
-	/**
-	 * Verifica se existe um array de categorias
-	 * 
-	 * @return bool
-	 */
-	private function verificaExisteArrayCategoria(){
-		if( !empty($this->dadosArquivo['categoria']) ){
-			return true;
-		}
-		return false;
 	}
 	
 	/**
@@ -48,7 +36,7 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias
 		$this->leArquivo();
 		
 		$ok = 0;
-		if( $this->verificaExisteArrayCategoria() ){
+		if( $this->verificaExisteArray('categoria') ){
 			$lastArray = end($this->dadosArquivo['categoria']); 
 			$lastId = $lastArray['id'] + 1;
 			$this->dadosArquivo['categoria'][] = array('id'=>$lastId, 'nome'=>$nome, 'status'=>1);
@@ -75,7 +63,7 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias
 		
 		$ok1 = 0;
 		$ok  = 0;
-		if( $this->verificaExisteArrayCategoria() ){
+		if( $this->verificaExisteArray('categoria') ){
 			foreach( $this->dadosArquivo['categoria'] as $key=>$categoria ){
 				if( $categoria['id'] == $id ){//verifica se o id e igual ao que foi enviado, se for altera o nome
 					$this->dadosArquivo['categoria'][$key]['nome'] = $nome;
@@ -107,7 +95,7 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOAbstractCategorias
 		
 		$ok1 = 0;
 		$ok  = 0;
-		if( $this->verificaExisteArrayCategoria() ){
+		if( $this->verificaExisteArray('categoria') ){
 			foreach( $this->dadosArquivo['categoria'] as $key=>$categoria ){
 				if( $categoria['id'] == $id ){//verifica se o id e igual ao que foi enviado, se for altera o nome
 					$this->dadosArquivo['categoria'][$key]['status'] = 0;

@@ -1,5 +1,5 @@
 <?php
-class DAOBdCategorias implements DAOAbstractCategorias{
+class DAOBdCategorias implements DAOInterfaceCategorias{
 	/**
 	 * Busca as categorias no BD
 	 * 

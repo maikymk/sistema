@@ -34,6 +34,19 @@ abstract class DAOAbstractJson{
 	}
 	
 	/**
+	 * Verifica se existe um array nos dados que trouxe do arquivo json
+	 *
+	 * @param String $nomeArray Nome da chave a ser buscada
+	 * @return bool
+	 */
+	protected function verificaExisteArray($nomeArray){
+		if( !empty($this->dadosArquivo[$nomeArray]) ){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Salva o array passado no arquivo
 	 * 
 	 * @param array() $array Array a ser salvo

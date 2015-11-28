@@ -1,5 +1,5 @@
 <?php
-interface DAOAbstractRelatorios{
+interface DAOInterfaceRelatorios{
 	
 	/**
 	 * Busca todos os dados de lancamento e monta um relatorio por categorias

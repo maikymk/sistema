@@ -1,5 +1,5 @@
 <?php
-interface DAOAbstractCategorias{
+interface DAOInterfaceCategorias{
 	
 	/**
 	 * Busca as categorias no BD

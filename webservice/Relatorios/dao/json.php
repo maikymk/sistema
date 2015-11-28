@@ -1,5 +1,5 @@
 <?php
-class DAOJsonRelatorios extends DAOAbstractJson implements DAOAbstractRelatorios {
+class DAOJsonRelatorios extends DAOAbstractJson implements DAOInterfaceRelatorios {
 	/**
 	 * Busca todos os dados de lancamento e monta um relatorio por categorias
 	 *
@@ -13,12 +13,14 @@ class DAOJsonRelatorios extends DAOAbstractJson implements DAOAbstractRelatorios
 		$result = array();
 		
 		if( $this->existeDados('lancamentos') ){
-			foreach( $this->dadosArquivo['lancamentos'] as $key=>$dado ){
-				if( !empty($tipo) ) {
+			if( !empty($tipo) ) {
+				foreach( $this->dadosArquivo['lancamentos'] as $key=>$dado ){				
 					if( $tipo == $dado['tipo'] ){
 						$result = $this->setDadosLancamento($dado);
 					}
-				} else{
+				}
+			} else{
+				foreach( $this->dadosArquivo['lancamentos'] as $key=>$dado ){
 					$result = $this->setDadosLancamento($dado);
 				}
 			}
