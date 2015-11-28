@@ -1,5 +1,6 @@
 <?php
 class DAOJsonLancamentos extends DAOAbstractJson implements DAOInterfaceLancamentos{
+	private $erro = array();
 	
 	/**
 	 * Busca as categorias no json
@@ -10,12 +11,7 @@ class DAOJsonLancamentos extends DAOAbstractJson implements DAOInterfaceLancamen
 	function visualizarLancamentos($tipo=null){
 		$this->abreArquivo();
 		$this->leArquivo();
-		/*
-		echo '<pre>';
-		print_r($this->dadosArquivo);
-		print_r($this->getCategorias());
-		echo '</pre>';
-		*/
+		
 		$result = array();
 		if( $this->existeArrayCategorias() && $this->existeArrayLancamentos() ){//verifica se existe categoria e lancamento
 			if( !empty($tipo) ){
@@ -165,8 +161,8 @@ class DAOJsonLancamentos extends DAOAbstractJson implements DAOInterfaceLancamen
 	 */
 	function getReceitas(){
 		$this->verificaArquivoAberto();
-		if( $this->existeArrayTipoReceita() ){
-			return $this->dadosArquivo['tipo_receita'];
+		if( $this->existeArrayTipoLancamento() ){
+			return $this->dadosArquivo['tipo_lancamento'];
 		}
 		return false;
 	}
@@ -178,7 +174,126 @@ class DAOJsonLancamentos extends DAOAbstractJson implements DAOInterfaceLancamen
 	 * @param String $descricao Descricao a ser verificada juntamente com a data
 	 * @return boolean
 	 */
-	function verificaLancamentoUsuario($data, $descricao){}
+	function verificaLancamentoUsuario($data, $descricao){
+		$this->abreArquivo();
+		$this->leArquivo();
+		
+		$nok=0;
+		if( $this->existeArrayUsuario() ){
+			$idUsuario = Usuario::getId();
+			
+			foreach( $this->dadosArquivo['lancamentos'] as $dados ){
+				if( $dados['usuario'] == $idUsuario && $dados['data'] == $data && strcmp($dados['descricao'], $descricao) == 0 ){
+					$nok++;
+				}
+			}
+		}
+		
+		if( $nok > 0 ){
+			$this->erros[] = "Erro! Voc&ecirc; n&atilde;o pode lan&ccedil;ar duas descri&ccedil;&otilde;es iguais no mesmo dia.";
+		}
+		
+		$this->fechaArquivo();
+		return (($nok > 0) ? false : true);
+	}
+	
+	/**
+	 * Valida os dados enviados pelo formulario
+	 * Se nao tiver erro retorna um array com o valores validos
+	 * Se tiver erro retorna false
+	 *
+	 * @param array $dados Dados para validar
+	 * @return bool|array
+	 */
+	function validaDados($dados){
+		$result = array();
+	
+		//validando o tamanho maximo do campo de descricao
+		if( $this->validaDado($dados['descLancamento'], 'Erro no campo descri&ccedil;&aatilde;o.') ){
+			if( $this->validaDescricao($dados['descLancamento']) ){
+				$result['descricao'] = $dados['descLancamento'];
+			}
+		}
+	
+		$result['valor'] = $this->validaDado($dados['valorLancamento'], 'Erro no campo valor.');
+		$result['categoria'] = $this->validaDado($dados['categLancamento'], 'Erro no campo categoria .');
+		$result['tipo'] = $this->validaDado($dados['tipoLancamento'], 'Erro no campo tipo.');
+	
+		//validando a data
+		if( $this->validaDado($dados['dataLancamento'], 'Erro na data. Preencha corretamente.') ){
+			$result['data'] = $this->validaData($dados['dataLancamento']);
+		}
+	
+		if( empty($this->erros) ){//se nao tiver nenhum erro retorna um array com os dados validados
+			if( $this->verificaLancamentoUsuario($result['data'], $result['descricao']) ){
+				return $result;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	/**
+	 * Valida o tamanho maximo da descricao do lancamento
+	 *
+	 * @param String $desc
+	 * @return bool
+	 */
+	private function validaDescricao($desc){
+		if( strlen($desc) > TAM_MAX_DESC ){
+			$this->erros[] = 'Erro no campo descri&ccedil;&atilde;o. O tamanho m&aacute;ximo &eacute; '.TAM_MAX_DESC.' caracteres.';
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Recebe uma data e valida ela
+	 *
+	 * @param String $dado data a ser validada
+	 * @return String|bool
+	 */
+	private function validaData($data){
+		$data1 = str_replace(array('-', '/', '\\'), '', $data);
+	
+		$dia = substr($data1, 0, 2);
+		$mes = substr($data1, 2, 2);
+		$ano = substr($data1, 4, 4);
+	
+		$data1 = $ano.'-'.$mes.'-'.$dia;
+		$data2 = date('Y-m-d', strtotime($data1));
+	
+		if( $data1 == $data2 && date('Y-m-d', strtotime($data1)) ){
+			return htmlentities(strip_tags($data2));
+		}
+	
+		$this->erros[] = 'Erro no campo data. Preencha corretamente.';
+		return false;
+	}
+	
+	/**
+	 * Valida o dado enviado
+	 *
+	 * @param String|numeric $dado Dado do campo a ser validado
+	 * @param String $msgErro Mensagem caso ocorra erro na validacao
+	 * @return String|bool
+	 */
+	private function validaDado($dado, $msgErro){
+		if( isset($dado) && !empty(trim($dado)) ){
+			return htmlentities(strip_tags($dado));
+		}
+		$this->erros[] = $msgErro;
+		return false;
+	}
+	
+	/**
+	 * Retorna todos os erros
+	 *
+	 * @return array
+	 */
+	function getErros(){
+		return $this->erros;
+	}
 	
 	/**
 	 * Cria um nova categoria
@@ -186,5 +301,34 @@ class DAOJsonLancamentos extends DAOAbstractJson implements DAOInterfaceLancamen
 	 * @param array() $dados $dados a serem salvos
 	 * @return int
 	 */
-	function adicionarLancamentos($dados){}
+	function adicionarLancamentos($dados){
+		$this->abreArquivo();
+		$this->leArquivo();
+		
+		$ok = 0;
+		if( $this->existeArrayLancamentos() ){
+			$idUsuario = Usuario::getId();
+			
+			$lastArray = end($this->dadosArquivo['lancamentos']);
+			$lastId = $lastArray['id'] + 1;
+			
+			$valor = str_replace(array('.', ','), array('', '.'), $dados['valor']);
+			$this->dadosArquivo['lancamentos'][] = array(
+				'id' 		=> $lastId, 
+				'descricao' => $dados['descricao'],
+				'valor' 	=> $valor,
+				'data' 		=> $dados['data'],
+				'categoria' => $dados['categoria'],
+				'tipo' 		=> $dados['tipo'],
+				'usuario' 	=> $idUsuario
+			);
+			
+			if( $this->salvaArquivo($this->dadosArquivo) ){
+				$ok++;
+			}
+		}
+		
+		$this->fechaArquivo();
+		return (($ok > 0) ? $lastId : '' );
+	}
 }

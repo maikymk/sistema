@@ -52,7 +52,7 @@ class DAOBdLancamentos implements DAOInterfaceLancamentos{
 	 * @return boolean
 	 */
 	function verificaLancamentoUsuario($data, $descricao){
-		$idUsuario = $this->getIdUser();
+		$idUsuario = Usuario::getId();
 		$sql = "SELECT data FROM lancamento WHERE data=? AND descricao=? AND usuario=?";
 		$result = Query::query($sql, array($data, $descricao, $idUsuario));
 		
@@ -61,10 +61,6 @@ class DAOBdLancamentos implements DAOInterfaceLancamentos{
 		}
 		$this->erros[] = "Erro! Voc&ecirc; n&atilde;o pode lan&ccedil;ar duas descri&ccedil;&otilde;es iguais no mesmo dia.";
 		return false;
-	}
-	
-	function getIdUser(){
-		return Usuario::getId();
 	}
 	
 	/**
@@ -102,7 +98,6 @@ class DAOBdLancamentos implements DAOInterfaceLancamentos{
 		}
 		return false;
 	}
-	
 
 	/**
 	 * Valida o tamanho maximo da descricao do lancamento
@@ -142,7 +137,6 @@ class DAOBdLancamentos implements DAOInterfaceLancamentos{
 		return false;
 	}
 	
-	
 	/**
 	 * Valida o dado enviado
 	 *
@@ -174,7 +168,7 @@ class DAOBdLancamentos implements DAOInterfaceLancamentos{
 	 * @return int
 	 */
 	function adicionarLancamentos($dados){
-		$idUsuario = $this->getIdUser();
+		$idUsuario = Usuario::getId();
 	
 		$valor = str_replace(array('.', ','), array('', '.'), $dados['valor']);
 		$values = array(
