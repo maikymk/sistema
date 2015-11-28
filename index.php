@@ -45,39 +45,55 @@ class ControllerFrame{
 		if( isset($_GET['erro']) ){//verifica se ocorreu algum erro
 			$erro = htmlentities($_GET['erro']);
 			$this->verificaErro($erro);//verifica o erro que foi passado pelo $_GET via htaccess
-		} else if( isset($_GET['page']) && $_GET['page'] == 'logout' ) {//verifica se esta fazendo logout
-			Sessao::destroiSessao();
-			header('Location: '.DIR_RAIZ);
-			exit;
-		} else if( isset($_GET['page']) && $_GET['page'] == 'new-account' ){//verifica se esta fazendo login
-			$erroNovaConta = null;
-			
-			if( isset($_POST['submitNovaConta']) ){//sem ajax
-				$this->model->validaNovaConta($_POST);
-			}
-			else if( isset($_POST['validaNovaConta']) ){//ajax
-				$dados = $this->model->validaNovaConta($_POST);
-				echo json_encode($dados);
-				exit;
-			}
-			$this->setContainer($this->view->telaNovaConta($erroNovaConta));
-		} else if( $this->verificaLogin() ){
-			$this->logado();
-		} else{//Se nao tiver sessao ja seta a tela de login
+		} else if( !$this->verificaPage() ){
 			$this->setContainer($this->view->telaLogin($this->erroLogin));//seta a tela de login e passa o erro ocorrido
 		}
 	}
 	
 	/**
-	 * Acoes que o usuario pode fazer quando logado
+	 * Verifica a pagina que o usuario esta tentando acessar, se nao tiver nenhuma seta a padrao
+	 * 
+	 * @return bool
 	 */
-	private function logado(){
-		if( isset($_GET['page']) && !empty($_GET['page']) ){
+	private function verificaPage(){
+		if( isset($_GET['page']) ){
 			$page = htmlentities($_GET['page']);
-			$this->validaAcesso($page);//valida a pagina que o usuario esta tentando acessar
-		} else{
-			$this->validaAcesso(PAGINA_PADRAO);//Passa a pagina padrao de acesso
+			
+			if( $this->verificaLogin() ){//se ja tiver login, o usuario pode fazer logout ou acessar alguma page
+				if( $page == 'logout' ) {//verifica se esta fazendo logout
+					Sessao::destroiSessao();
+					header('Location: '.DIR_RAIZ);
+					exit;
+				} else {
+					if( !$this->validaAcesso($page) ){ //valida a pagina que o usuario esta tentando acessar, se nao existir seta a padrao
+						$this->verificaErro('404');//mostra o erro 404
+					}
+				}
+			} else {// se nao tiver login, o usuario so pode fazer a acao de nova conta
+				if( $page == 'new-account' ){
+					$erroNovaConta = null;
+					
+					if( isset($_POST['submitNovaConta']) ){//sem ajax
+						$this->model->validaNovaConta($_POST);
+					}
+					else if( isset($_POST['validaNovaConta']) ){//ajax
+						$dados = $this->model->validaNovaConta($_POST);
+						echo json_encode($dados);
+						exit;
+					}
+					$this->setContainer($this->view->telaNovaConta($erroNovaConta));
+				} else{
+					$this->verificaErro('404');//mostra o erro 404
+				}
+			}
+			return true;
+		} else {//se nao existir page, tambem verifica se existe login
+			if( $this->verificaLogin() ){//nao existe um page, mas o usuario tem login, mostra pagina home pra ele
+				$this->validaAcesso(PAGINA_PADRAO);//Passa a pagina padrao de acesso
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	/**
@@ -112,9 +128,9 @@ class ControllerFrame{
 			$obj->handle();
 			
 			$this->setContainer($obj->mostraTela());
-		} else {
-			$this->verificaErro('404');
-		}
+			return true;
+		} 
+		return false;
 	}
 	
 	/**
