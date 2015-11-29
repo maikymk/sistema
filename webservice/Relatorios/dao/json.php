@@ -1,5 +1,6 @@
 <?php
 class DAOJsonRelatorios extends DAOAbstractJson implements DAOInterfaceRelatorios {
+	private $dadosLancamento = array();
 	/**
 	 * Busca todos os dados de lancamento e monta um relatorio por categorias
 	 *
@@ -10,37 +11,33 @@ class DAOJsonRelatorios extends DAOAbstractJson implements DAOInterfaceRelatorio
 		$this->abreArquivo();
 		$this->leArquivo();
 		
-		$result = array();
-		
 		if( $this->existeDados('lancamentos') ){
 			if( !empty($tipo) ) {
 				foreach( $this->dadosArquivo['lancamentos'] as $key=>$dado ){				
 					if( $tipo == $dado['tipo'] ){
-						$result = $this->setDadosLancamento($dado);
+						$this->setDadosLancamento($dado);
 					}
 				}
 			} else{
 				foreach( $this->dadosArquivo['lancamentos'] as $key=>$dado ){
-					$result = $this->setDadosLancamento($dado);
+					$this->setDadosLancamento($dado);
 				}
 			}
 		}
 		
 		$this->fechaArquivo();
 		
-		return $result;
+		return $this->dadosLancamento;
 	}
 	
 	/**
 	 * Seta os dados dos lancamentos
 	 * 
 	 * @param array() $dado Dados a serem setados
-	 * @return array()
 	 */
 	private function setDadosLancamento($dado){
-		$result = array();
 		if( ($categoria = $this->getNome('categoria', $dado['categoria'])) && ($nomeTipo = $this->getNome('tipo_lancamento', $dado['tipo'])) ){
-			$result[$categoria][] = array(
+			$this->dadosLancamento[$categoria][] = array(
 				'id' => $dado['id'],
 				'descricao' => $dado['descricao'],
 				'valor' => number_format($dado['valor'], 2, ",","."),
@@ -49,7 +46,6 @@ class DAOJsonRelatorios extends DAOAbstractJson implements DAOInterfaceRelatorio
 				'usuario' => Usuario::getNomePorId($dado['usuario']),
 			);
 		}
-		return $result;
 	}
 	
 	/**
