@@ -1,4 +1,8 @@
 <?php
+/**
+ * Controller principal, todas as solicitacoes passam por ele
+ */
+
 require_once 'system'.DIRECTORY_SEPARATOR.'config.php';
 require_once LIB.DS.'autoload.php';
 
