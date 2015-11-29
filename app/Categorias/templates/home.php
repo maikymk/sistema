@@ -176,7 +176,8 @@
 				<th class="col-md-9 col-sm-7 col-xs-6">Nome categoria</th>
 				<th class="col-md-3 col-sm-5 col-xs-6">A&ccedil;&otilde;es</th>
 			</tr>
-			<?php foreach( $this->categorias as $cat ){ ?>
+			<?php if( !empty($this->categorias) ) {
+				foreach( $this->categorias as $cat ){ ?>
 			<tr id="lin-cat_<?php echo $cat['id'];?>">
 				<td class="col-md-9 col-sm-7 col-xs-6 mk-ver-ali-mid" id="texto-categoria-<?php echo $cat['id'];?>"><?php echo html_entity_decode($cat['nome']);?></td>
 				<td class="col-md-3 col-sm-5 col-xs-6">
@@ -184,6 +185,11 @@
 					<a href="<?php echo BASE.'categoria'.DS.'editar'.DS.$cat['id'];?>" id="ed_<?php echo $cat['id'];?>" class="btn btn-sm btn-warning edi-cat">Editar</a>
 					<a href="<?php echo BASE.'categoria'.DS.'remover'.DS.$cat['id'];?>" id="rm_<?php echo $cat['id'];?>" class="btn btn-sm btn-danger rem-cat">Apagar</a>
 				</td>
+			</tr>
+			<?php }
+				} else {?>
+			<tr>
+				<td colspan="6" class="mk-txt-ali-cen"><h3>Nenhum registro encontrado</h3></td>
 			</tr>
 			<?php }?>
 		</table>

@@ -17,7 +17,8 @@
 				<th class="col-md-2">Tipo</th>
 				<th class="col-md-2">Usu&aacute;rio</th>
 			</tr>
-			<?php foreach( $this->lancamentos as $lanc ){ ?>
+			<?php  if( !empty($this->lancamentos) ){ 
+				foreach( $this->lancamentos as $lanc ){ ?>
 			<tr id="lin-cat_<?php echo $lanc['id'];?>">
 				<td id="texto-categoria-<?php echo $lanc['id'];?>"><?php echo $lanc['descricao'];?></td>
 				<td><?php echo $lanc['valor'];?></td>
@@ -25,6 +26,11 @@
 				<td><?php echo $lanc['categoria'];?></td>
 				<td><?php echo $lanc['tipo'];?></td>
 				<td><?php echo $lanc['usuario'];?></td>
+			</tr>
+			<?php }
+				} else {?>
+			<tr>
+				<td colspan="6" class="mk-txt-ali-cen"><h3>Nenhum registro encontrado</h3></td>
 			</tr>
 			<?php }?>
 		</table>
