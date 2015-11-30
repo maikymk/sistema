@@ -11,6 +11,7 @@
 	<head>
 		<link rel="stylesheet" href="<?php echo CSS.'css.css';?>" type="text/css">
 		<link rel="stylesheet" href="<?php echo CSS.'bootstrap.css';?>" type="text/css">
+		<link rel="icon" href="<?php echo BASE.'favicon.ico';?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 		<script type="text/javascript" src="<?php echo JS.'jquery-2.1.4.min.js'?>"></script>
 		<script type="text/javascript" src="<?php echo JS.'bootstrap.js'?>"></script>
