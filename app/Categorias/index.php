@@ -7,7 +7,6 @@ $array_autoLoad = array(
 	
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);
-//$autoLoad->setExtensions(array('.php'));
 $autoLoad->load();
 
 class ControllerCategorias implements InterfaceController{
@@ -90,6 +89,9 @@ class ControllerCategorias implements InterfaceController{
 				case 'remover':
 					$metodo = 'remover';
 					break;
+				default: 
+					$metodo = 'home';
+					break;
 			}
 		}
 		
@@ -102,14 +104,15 @@ class ControllerCategorias implements InterfaceController{
 	 * @return bool|int
 	 */
 	private function verificaAcao(){
+		$return = 0;
 		if( $this->acao == 'adicionar' ){
-			return $this->verificaAdicionar();
+			$return = $this->verificaAdicionar();
 		} else if( $this->acao == 'editar' ){
-			return $this->verificaEditar();
+			$return = $this->verificaEditar();
 		} else if( $this->acao == 'remover' ){
-			return $this->verificaRemover();
+			$return = $this->verificaRemover();
 		}
-		return 0;
+		return $return;
 	}
 	
 	/**

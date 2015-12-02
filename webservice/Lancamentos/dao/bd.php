@@ -1,7 +1,5 @@
 <?php
 class DAOBdLancamentos implements DAOInterfaceLancamentos{
-	private $erro = array();
-	
 	/**
 	 * Busca as categorias no BD
 	 *
@@ -75,10 +73,8 @@ class DAOBdLancamentos implements DAOInterfaceLancamentos{
 		$result = array();
 	
 		//validando o tamanho maximo do campo de descricao
-		if( $this->validaDado($dados['descLancamento'], 'Erro no campo descri&ccedil;&aatilde;o.') ){
-			if( $this->validaDescricao($dados['descLancamento']) ){
-				$result['descricao'] = $dados['descLancamento'];
-			}
+		if( $this->validaDado($dados['descLancamento'], 'Erro no campo descri&ccedil;&aatilde;o.') && $this->validaDescricao($dados['descLancamento']) ){
+			$result['descricao'] = $dados['descLancamento'];
 		}
 	
 		$result['valor'] = $this->validaDado($dados['valorLancamento'], 'Erro no campo valor.');

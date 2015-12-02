@@ -40,7 +40,8 @@
 									'<a href="'+link+'remover\\'+data.id+'" id="rm_'+data.id+'" class="btn btn-sm btn-danger rem-cat">Apagar</a> '+
 								'</td>'+
 						    '</tr>';
-						    
+
+						    $('.sem-registro').remove(0);
 							$('#table-categorias').append(html);
 							
 							$(".modal-vis-cat").click(function(){
@@ -188,7 +189,7 @@
 			</tr>
 			<?php }
 				} else {?>
-			<tr>
+			<tr class="sem-registro">
 				<td colspan="6" class="mk-txt-ali-cen"><h3>Nenhum registro encontrado</h3></td>
 			</tr>
 			<?php }?>

@@ -7,7 +7,6 @@ $array_autoLoad = array(
 
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);
-//$autoLoad->setExtensions(array('.php'));
 $autoLoad->load();
 
 class ControllerWebserviceLancamentos extends AbstractWebserviceController{

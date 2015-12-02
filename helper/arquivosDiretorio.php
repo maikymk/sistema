@@ -2,7 +2,6 @@
 class ArquivosDiretorio{
 	private static $dir;
 	private static $exts;
-	private static $allFiles = array();
 	
 	/**
 	 * Salva o diretorio atual para fazer busca dos arquivos nele
@@ -10,7 +9,7 @@ class ArquivosDiretorio{
 	 * @param String $dir Caminho do diretorio
 	 */
 	static function setDir($dir){
-		self::$dir = $dir;
+		static::$dir = $dir;
 	}
 	
 	/**
@@ -21,7 +20,7 @@ class ArquivosDiretorio{
 	static function setExtensions($exts){
 		if( !empty( $exts ) ){
 			foreach( $exts as $ext ){
-				self::$exts[] = strtolower($ext);
+				static::$exts[] = strtolower($ext);
 			}
 		}
 	}
@@ -31,25 +30,23 @@ class ArquivosDiretorio{
 	 */
 	static function getFiles(){
 		//pega todos os arquivos e pastas do diretório
-		$files = scandir(self::$dir);
+		$files = scandir(static::$dir);
 		$allFiles = null;
 		
-		if( empty(self::$exts) ){
+		if( empty(static::$exts) ){
 			foreach ($files as $key => $file){
-				$f = self::$dir.$file;//monta o caminho com o nome do arquivo
+				$f = static::$dir.$file;//monta o caminho com o nome do arquivo
 				
-				if( self::validaArquivo($f) ){
+				if( static::validaArquivo($f) ){
 					$allFiles[] = $file;
 				}
 			}
 		} else{
 			foreach ($files as $key => $file){
-				$f = self::$dir.$file;//monta o caminho com o nome do arquivo
+				$f = static::$dir.$file;//monta o caminho com o nome do arquivo
 					
-				if( self::validaArquivo($f) ){
-					if( $fil = self::validaExtensao($file) ){
-						$allFiles[] = $fil;
-					}
+				if( static::validaArquivo($f) && $fil = static::validaExtensao($file) ){
+					$allFiles[] = $fil;
 				}
 			}
 		}
@@ -91,10 +88,11 @@ class ArquivosDiretorio{
 	private static function validaExtensao($file){
 		preg_match('@^[a-zA-Z]+\.([a-zA-z]+)@', $file, $extFile);
 		
-		if( !empty($extFile) )
+		if( !empty($extFile) ){
 			$extFile = '.'.strtolower($extFile[1]);
+		}
 		
-		if( in_array($extFile, self::$exts) ){
+		if( in_array($extFile, static::$exts) ){
 			return $file;
 		} else{
 			echo '<br><br>Extensao do arquivo incompativel com o aceito, arquivo: '.$file.'<br><br>';

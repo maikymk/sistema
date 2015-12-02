@@ -49,7 +49,7 @@ class DAOJsonRelatorios extends DAOAbstractJson implements DAOInterfaceRelatorio
 	}
 	
 	/**
-	 * Busca o(s) nome(s) de uma tabela especifica, se passar o id busca um nome especifico, se nao busca todos
+	 * Busca o(s) nome(s) de uma tabela especifica, se passar o id busca um nome especifico, se nao busca tudo
 	 * 
 	 * @param String $nomeArray Nome do array que ira buscar pelo(s) nome(s)
 	 * @param int $id Id para fazer a busca pelo nome

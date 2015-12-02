@@ -18,9 +18,4 @@ interface InterfaceController{
 	 * @return HTML Conteudo da tela
 	 */
 	function mostraTela();
-	
-	/**
-	 * Define qual tela sera exibida ao usuario
-	 */
-	//function verificaAcesso();
 }

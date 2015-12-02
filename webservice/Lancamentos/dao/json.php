@@ -1,7 +1,5 @@
 <?php
 class DAOJsonLancamentos extends DAOAbstractJson implements DAOInterfaceLancamentos{
-	private $erro = array();
-	
 	/**
 	 * Busca as categorias no json
 	 *
@@ -182,9 +180,11 @@ class DAOJsonLancamentos extends DAOAbstractJson implements DAOInterfaceLancamen
 		if( $this->existeArrayUsuario() ){
 			$idUsuario = Usuario::getId();
 			
-			foreach( $this->dadosArquivo['lancamentos'] as $dados ){
-				if( $dados['usuario'] == $idUsuario && $dados['data'] == $data && strcmp($dados['descricao'], $descricao) == 0 ){
-					$nok++;
+			if( $this->existeArrayLancamentos() ){
+				foreach( $this->dadosArquivo['lancamentos'] as $dados ){
+					if( $dados['usuario'] == $idUsuario && $dados['data'] == $data && strcmp($dados['descricao'], $descricao) == 0 ){
+						$nok++;
+					}
 				}
 			}
 		}
@@ -209,10 +209,8 @@ class DAOJsonLancamentos extends DAOAbstractJson implements DAOInterfaceLancamen
 		$result = array();
 	
 		//validando o tamanho maximo do campo de descricao
-		if( $this->validaDado($dados['descLancamento'], 'Erro no campo descri&ccedil;&aatilde;o.') ){
-			if( $this->validaDescricao($dados['descLancamento']) ){
-				$result['descricao'] = $dados['descLancamento'];
-			}
+		if( $this->validaDado($dados['descLancamento'], 'Erro no campo descri&ccedil;&aatilde;o.') && $this->validaDescricao($dados['descLancamento']) ){
+			$result['descricao'] = $dados['descLancamento'];
 		}
 	
 		$result['valor'] = $this->validaDado($dados['valorLancamento'], 'Erro no campo valor.');
@@ -305,27 +303,28 @@ class DAOJsonLancamentos extends DAOAbstractJson implements DAOInterfaceLancamen
 		$this->abreArquivo();
 		$this->leArquivo();
 		
+		$idUsuario = Usuario::getId();
+		
+		$lastId = 1;//inicia em 1 para caso nao exista o array, inicia nessa posicao
 		$ok = 0;
 		if( $this->existeArrayLancamentos() ){
-			$idUsuario = Usuario::getId();
+			$lastArray = end($this->dadosArquivo['lancamentos']);//busca o ultimo array dos lancamentos
+			$lastId = $lastArray['id'] + 1;//adiciona 1 ao valor encontrado para que esse seja o ultimo id
+		}
+		
+		$valor = str_replace(array('.', ','), array('', '.'), $dados['valor']);
+		$this->dadosArquivo['lancamentos'][] = array(
+			'id' 		=> $lastId,
+			'descricao' => $dados['descricao'],
+			'valor' 	=> $valor,
+			'data' 		=> $dados['data'],
+			'categoria' => $dados['categoria'],
+			'tipo' 		=> $dados['tipo'],
+			'usuario' 	=> $idUsuario
+		);
 			
-			$lastArray = end($this->dadosArquivo['lancamentos']);
-			$lastId = $lastArray['id'] + 1;
-			
-			$valor = str_replace(array('.', ','), array('', '.'), $dados['valor']);
-			$this->dadosArquivo['lancamentos'][] = array(
-				'id' 		=> $lastId, 
-				'descricao' => $dados['descricao'],
-				'valor' 	=> $valor,
-				'data' 		=> $dados['data'],
-				'categoria' => $dados['categoria'],
-				'tipo' 		=> $dados['tipo'],
-				'usuario' 	=> $idUsuario
-			);
-			
-			if( $this->salvaArquivo($this->dadosArquivo) ){
-				$ok++;
-			}
+		if( $this->salvaArquivo($this->dadosArquivo) ){
+			$ok++;
 		}
 		
 		$this->fechaArquivo();

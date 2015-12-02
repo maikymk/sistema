@@ -7,7 +7,6 @@ $array_autoLoad = array(
 
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);
-//$autoLoad->setExtensions(array('.php'));
 $autoLoad->load();
 
 class ControllerRelatorios implements InterfaceController{
@@ -36,12 +35,6 @@ class ControllerRelatorios implements InterfaceController{
 			}
 			exit;
 		} else {
-			if( $this->validaGet() ){
-				if( $this->verificaAcao() ){
-					
-				}
-			}
-			
 			$this->verificaAcesso();
 		}
 	}
@@ -84,6 +77,9 @@ class ControllerRelatorios implements InterfaceController{
 				case 'categoria':
 					$metodo = 'categoria';
 					break;
+				default: 
+					$metodo = 'home';
+					break;
 			}
 		}
 		
@@ -96,11 +92,6 @@ class ControllerRelatorios implements InterfaceController{
 	 * @return bool|int
 	 */
 	private function verificaAcao(){
-		/*
-		 if( $this->acao == 'categoria' ){
-			return $this->verificaCategoria();
-		}
-		*/
 		return 0;
 	}
 	

@@ -7,7 +7,6 @@ $array_autoLoad = array(
 
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);
-//$autoLoad->setExtensions(array('.php'));
 $autoLoad->load();
 
 class ControllerLancamentos implements InterfaceController{
@@ -38,10 +37,8 @@ class ControllerLancamentos implements InterfaceController{
 			}
 			exit;
 		} else {
-			if( $this->validaGet() ){
-				if( $this->verificaAcao() ){
-					$this->view->setSucessos($this->msgSucesso);
-				}
+			if( $this->validaGet() && $this->verificaAcao() ){
+				$this->view->setSucessos($this->msgSucesso);
 			}
 			
 			$this->verificaAcesso();
@@ -86,6 +83,9 @@ class ControllerLancamentos implements InterfaceController{
 			switch ($acao){
 				case 'adicionar':
 					$metodo = 'adicionar';
+					break;
+				default: 
+					$metodo = 'home';
 					break;
 			}
 		}

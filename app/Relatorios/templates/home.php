@@ -16,7 +16,7 @@ $tipo = isset($_GET['filtro']) ? (int) htmlentities($_GET['filtro']) : '';
 						<select class="mk-wid-80-prc" name="filtro">
 			    			<option value="">Selecione uma categoria</option>
 			    			<?php foreach( $this->tipos as $tp ){?>
-			    			<option value="<?php echo $tp['id'];?>" <?php echo (($tp['id'] == $tipo) ? 'selected="selected"' : '')?>><?php echo $tp['nome'];?></option>
+			    			<option value="<?php echo $tp['id'];?>" <?php echo ($tp['id'] == $tipo) ? 'selected="selected"' : '';?>><?php echo $tp['nome'];?></option>
 		    				<?php }?>
 		    			</select>
 		    			<button type="submit" class="btn btn-primary mk-mar-top-5-neg">Filtrar</button>
@@ -42,15 +42,15 @@ $tipo = isset($_GET['filtro']) ? (int) htmlentities($_GET['filtro']) : '';
 			<?php if( !empty($this->dadosRelatorio) ){
 					foreach( $this->dadosRelatorio as $key=>$dados ){ ?>
 			<tr>
-				<td class="mk-ver-ali-mid <?php echo (($i %2 == 0) ? 'mk-bac-eee' : '');?>" rowspan="<?php echo (count($dados)+1);?>"><?php echo $key;?></td>
+				<td class="mk-ver-ali-mid <?php echo ($i %2 == 0) ? 'mk-bac-eee' : '';?>" rowspan="<?php echo count($dados)+1;?>"><?php echo $key;?></td>
 			</tr>
 			<?php foreach( $dados as $dado ){ ?>
 			<tr id="lin-cat_<?php echo $dado['id'];?>">
-				<td <?php echo (($i %2 == 0) ? 'class="mk-bac-eee"' : '');?>><?php echo $dado['descricao'];?></td>
-				<td <?php echo (($i %2 == 0) ? 'class="mk-bac-eee"' : '');?>><?php echo $dado['valor'];?></td>
-				<td <?php echo (($i %2 == 0) ? 'class="mk-bac-eee"' : '');?>><?php echo $dado['data'];?></td>
-				<td <?php echo (($i %2 == 0) ? 'class="mk-bac-eee"' : '');?>><?php echo $dado['tipo'];?></td>
-				<td <?php echo (($i %2 == 0) ? 'class="mk-bac-eee"' : '');?>><?php echo $dado['usuario'];?></td>
+				<td <?php echo ($i %2 == 0) ? 'class="mk-bac-eee"' : '';?>><?php echo $dado['descricao'];?></td>
+				<td <?php echo ($i %2 == 0) ? 'class="mk-bac-eee"' : '';?>><?php echo $dado['valor'];?></td>
+				<td <?php echo ($i %2 == 0) ? 'class="mk-bac-eee"' : '';?>><?php echo $dado['data'];?></td>
+				<td <?php echo ($i %2 == 0) ? 'class="mk-bac-eee"' : '';?>><?php echo $dado['tipo'];?></td>
+				<td <?php echo ($i %2 == 0) ? 'class="mk-bac-eee"' : '';?>><?php echo $dado['usuario'];?></td>
 			</tr>
 			<?php } 
 				  $i++; 

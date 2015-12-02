@@ -35,15 +35,17 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOInterfaceCategoria
 		$this->abreArquivo();
 		$this->leArquivo();
 		
+		$lastId = 1;//inicia em 0, se nao existir categoria 
 		$ok = 0;
 		if( $this->verificaExisteArray('categoria') ){
 			$lastArray = end($this->dadosArquivo['categoria']); 
 			$lastId = $lastArray['id'] + 1;
-			$this->dadosArquivo['categoria'][] = array('id'=>$lastId, 'nome'=>$nome, 'status'=>1);
-			
-			if( $this->salvaArquivo($this->dadosArquivo) ){
-				$ok++;
-			}
+		}
+		
+		$this->dadosArquivo['categoria'][] = array('id'=>$lastId, 'nome'=>$nome, 'status'=>1);
+		
+		if( $this->salvaArquivo($this->dadosArquivo) ){
+			$ok++;
 		}
 		
 		$this->fechaArquivo();
@@ -70,10 +72,8 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOInterfaceCategoria
 					$ok1++;
 				}
 			}
-			if( $ok1 > 0 ){//se tiver encontrado o id passado pelo usuario, faz atualizacao nos dados do arquivo
-				if( $this->salvaArquivo($this->dadosArquivo) ){
-					$ok++;
-				}
+			if( $ok1 > 0 && $this->salvaArquivo($this->dadosArquivo) ){//se tiver encontrado o id passado pelo usuario, faz atualizacao nos dados do arquivo
+				$ok++;
 			}
 		}
 		
@@ -88,8 +88,6 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOInterfaceCategoria
 	 * @return number|boolean
 	 */
 	function removerCategoria($id){
-		//$sql = "UPDATE categoria SET status=0 WHERE id=?";
-		
 		$this->abreArquivo();
 		$this->leArquivo();
 		
@@ -102,10 +100,8 @@ class DAOJsonCategorias extends DAOAbstractJson implements DAOInterfaceCategoria
 					$ok1++;
 				}
 			}
-			if( $ok1 > 0 ){//se tiver encontrado o id passado pelo usuario, faz atualizacao nos dados do arquivo
-				if( $this->salvaArquivo($this->dadosArquivo) ){
-					$ok++;
-				}
+			if( $ok1 > 0 && $this->salvaArquivo($this->dadosArquivo) ){//se tiver encontrado o id passado pelo usuario, faz atualizacao nos dados do arquivo
+				$ok++;
 			}
 		}
 		

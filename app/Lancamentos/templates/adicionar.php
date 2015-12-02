@@ -26,7 +26,7 @@ $selected = 'selected="selected"';
 			<a href="<?php echo BASE.'lancamentos';?>" class="btn btn-default mk-mar-top-20">voltar</a>
 		</div>
 	</div>
-	<?php if(!empty($this->erros)){?>
+	<?php if(!empty($this->erros)){ ?>
 	<div class="row col-md-12 mk-mar-top-20">
 	<?php foreach( $this->erros as $erro ){?>
 		<p class="mk-mar-aut mk-wid-50-prc bg-danger msgNovaConta mk-erro mk-mar-bot-10"><?php echo $erro;?></p>
@@ -39,7 +39,8 @@ $selected = 'selected="selected"';
 		<p class="mk-mar-aut mk-wid-50-prc bg-success msgNovaConta mk-sucesso mk-mar-bot-10"><?php echo $sucesso;?></p>
 	<?php }?>
 	</div>
-	<?php }?>
+	<?php }
+	if( !empty($this->categorias) ){?>
 	<form class="mk-pad-bot-10" method="POST" action="">
 		<div class="row mk-mar-bot-10 mk-pad-rig-lef-15">
 			<label for="descricao">Descri&ccedil;&atilde;o</label>
@@ -61,7 +62,7 @@ $selected = 'selected="selected"';
     			<select id="categoria" class="mk-wid-100-prc" name="categLancamento">
 	    			<option value="">Selecione uma categoria</option>
 	    			<?php foreach( $this->categorias as $cat ){?>
-	    			<option value="<?php echo $cat['id'];?>" <?php echo (($cat['id'] == $campos['categoria']) ? $selected : '')?>><?php echo $cat['nome'];?></option>
+	    			<option value="<?php echo $cat['id'];?>" <?php echo ($cat['id'] == $campos['categoria']) ? $selected : '';?>><?php echo $cat['nome'];?></option>
     			<?php }?>
     			</select>
   			</div>
@@ -70,7 +71,7 @@ $selected = 'selected="selected"';
     			<select id="tipo" class="mk-wid-100-prc" name="tipoLancamento">
 	    			<option value="">Selecione um tipo de receita</option>
 	    			<?php foreach( $this->receitas as $rec ){?>
-	    			<option value="<?php echo $rec['id'];?>" <?php echo (($rec['id'] == $campos['tipo']) ? $selected : '')?>><?php echo $rec['nome'];?></option>
+	    			<option value="<?php echo $rec['id'];?>" <?php echo ($rec['id'] == $campos['tipo']) ? $selected : '';?>><?php echo $rec['nome'];?></option>
     			<?php }?>
     			</select>
   			</div>
@@ -79,4 +80,11 @@ $selected = 'selected="selected"';
   			<button type="submit" name="adicionarLancamento" class="btn btn-primary">Cadastrar</button>
 		</div>
 	</form>
+	<?php } else {?>
+	<div class="row">
+		<div class="col-md-12">
+			<h4 class="mk-mar-aut mk-wid-50-prc bg-danger msgNovaConta mk-erro mk-mar-top-20">Cadastre primeiro uma categoria.</h4>
+		</div>
+	</div>
+	<?php }?>
 </div>

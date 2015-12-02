@@ -17,14 +17,14 @@ class DAOBdRelatorios implements DAOInterfaceRelatorios {
 	
 		if( $dados = Query::query($sql, $tipo) ){
 			$result = array();
-			foreach( $dados as $key=>$dado ){
+			foreach( $dados as $dado ){
 				$result[$dado['categoria']][] = array(
-						'id' => $dado['id'],
-						'descricao' => $dado['descricao'],
-						'valor' => number_format($dado['valor'], 2, ",","."),
-						'data' => date('d/m/Y', strtotime($dado['data'])),
-						'tipo' => $dado['tipo'],
-						'usuario' => $dado['usuario'],
+					'id' => $dado['id'],
+					'descricao' => $dado['descricao'],
+					'valor' => number_format($dado['valor'], 2, ",","."),
+					'data' => date('d/m/Y', strtotime($dado['data'])),
+					'tipo' => $dado['tipo'],
+					'usuario' => $dado['usuario'],
 				);
 			}
 			
