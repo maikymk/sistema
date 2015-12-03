@@ -7,6 +7,7 @@
  */
 $array_autoLoad = array(
     INTERFACE_APP => array(), 
+    ABSTRACT_APP => array(),
     APP . 'Lancamentos' . DS => array('model.php', 'view.php')
 );
 
@@ -14,7 +15,7 @@ $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);
 $autoLoad->load();
 
-class ControllerLancamentos implements InterfaceController {
+class ControllerLancamentos extends AbstractAppController implements InterfaceController {
     private $view;
     private $model;
     private $telaUser;
@@ -47,8 +48,20 @@ class ControllerLancamentos implements InterfaceController {
                 $this->view->setSucessos($this->msgSucesso);
             }
             
-            $this->verificaAcesso();
+            $metodo = $this->verificaAcesso($this->acoes);
+            $this->$metodo();
         }
+    }
+    
+    /**
+     * Metodo implementado da interface
+     *
+     * {@inheritDoc}
+     *
+     * @see InterfaceController::mostraTela()
+     */
+    public function mostraTela() {
+        return $this->telaUser;
     }
 
     /**
@@ -63,36 +76,6 @@ class ControllerLancamentos implements InterfaceController {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Metodo implementado da interface
-     * 
-     * {@inheritDoc}
-     *
-     * @see InterfaceController::mostraTela()
-     */
-    public function mostraTela() {
-        return $this->telaUser;
-    }
-
-    /**
-     * Verifica a parte do site que o usuario esta tentando acessar, caso nao esteja tentando acessar nenhuma manda ele pra home de usuario
-     * 
-     * @param String $acesso Parte do site que o usuario esta tentando acessar
-     */
-    private function verificaAcesso() {
-        $metodo = 'home';
-        
-        if (isset($_GET['ac'])) {
-            $ac = htmlentities($_GET['ac']);
-            
-            if ($ac == 'adicionar') {
-                $metodo = 'adicionar';
-            }
-        }
-        
-        $this->$metodo();
     }
 
     /**

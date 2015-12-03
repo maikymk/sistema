@@ -7,13 +7,14 @@
  */
 $array_autoLoad = array(
     INTERFACE_APP => array(), 
+    ABSTRACT_APP => array(),
     APP . 'Categorias' . DS => array('model.php', 'view.php'));
 
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);
 $autoLoad->load();
 
-class ControllerCategorias implements InterfaceController {
+class ControllerCategorias extends AbstractAppController implements InterfaceController {
     //caminho para os templates desse componente
     private $templates = APP . 'Categorias' . DS . 'templates' . DS;
     //acoes que esse componente pode executar
@@ -48,7 +49,8 @@ class ControllerCategorias implements InterfaceController {
                 $this->verificaAcao();
             }
             
-            $this->verificaAcesso();
+            $metodo = $this->verificaAcesso($this->acoes);
+            $this->$metodo();
         }
     }
 
@@ -75,38 +77,6 @@ class ControllerCategorias implements InterfaceController {
      */
     public function mostraTela() {
         return $this->telaUser;
-    }
-
-    /**
-     * Verifica a parte do site que o usuario esta tentando acessar, 
-     * caso nao esteja tentando acessar nenhuma manda ele pra home de usuario
-     * 
-     * @param String $acesso Parte do site que o usuario esta tentando acessar
-     */
-    private function verificaAcesso() {
-        //por padrao o usuario vera a pagina home do componente
-        $metodo = 'home';
-        
-        if (isset($_GET['ac'])) {
-            $ac = htmlentities($_GET['ac']);
-            
-            switch ($ac) {
-                case 'adicionar':
-                    $metodo = 'adicionar';
-                    break;
-                case 'editar':
-                    $metodo = 'editar';
-                    break;
-                case 'remover':
-                    $metodo = 'remover';
-                    break;
-                default:
-                    $metodo = 'home';
-                    break;
-            }
-        }
-        
-        $this->$metodo();
     }
 
     /**

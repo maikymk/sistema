@@ -6,17 +6,14 @@ require_once 'system' . DIRECTORY_SEPARATOR . 'config.php';
 require_once LIB . DS . 'autoload.php';
 
 $array = array(
-    DIR_RAIZ => array(
-        'model.php', 
-        'view.php'), 
-    SYSTEM => array(
-        'query.php'), 
-    LIB => '');
+    DIR_RAIZ => array('model.php', 'view.php'), 
+    SYSTEM => array('query.php'), 
+    LIB => ''
+);
 
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array);
-$autoLoad->setExtensions(array(
-    '.php'));
+$autoLoad->setExtensions(array('.php'));
 $autoLoad->load();
 
 class ControllerFrame {

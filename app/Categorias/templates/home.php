@@ -184,8 +184,7 @@
             <?php
             //verifica se existe alguma categoria
             if (! empty($this->categorias)) {
-                foreach ($this->categorias as $cat) {
-                    ?>
+                foreach ($this->categorias as $cat) { ?>
             <tr id="lin-cat_<?php echo $cat['id'];?>">
                 <td class="col-md-9 col-sm-7 col-xs-6 mk-ver-ali-mid" id="texto-categoria-<?php echo $cat['id'];?>"><?php
                     /**

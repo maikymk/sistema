@@ -6,12 +6,9 @@
  * Passando vazio busca todos da pasta
  */
  $array_autoLoad = array(
-    WEB_SERVICE . 'Abstract' . DS => array(
-        'controller.php', 
-        'dao_json.php'), 
-    WEB_SERVICE . 'Lancamentos' . DS . 'dao' . DS => array(
-        'interface.php', 
-        strtolower(SALVA_DADOS) . '.php'));
+    WEB_SERVICE . 'Abstract' . DS => array('controller.php', 'dao_json.php'), 
+    WEB_SERVICE . 'Lancamentos' . DS . 'dao' . DS => array('interface.php', strtolower(SALVA_DADOS) . '.php')
+ );
 
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);

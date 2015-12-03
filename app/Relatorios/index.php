@@ -1,16 +1,20 @@
 <?php
-//Faz autoload nas pasta passadas como key para o array, e busca os arquivos que estao como chave, passando vazio busca todos da pasta
-$array_autoLoad = array(
+
+/**
+ * Faz autoload nas pasta passadas como key para o array,
+ * e busca os arquivos que estao como chave.
+ * Passando vazio busca todos da pasta
+ */
+ $array_autoLoad = array(
     INTERFACE_APP => array(), 
-    APP . 'Relatorios' . DS => array(
-        'model.php', 
-        'view.php'));
+     ABSTRACT_APP => array(),
+    APP . 'Relatorios' . DS => array('model.php', 'view.php'));
 
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);
 $autoLoad->load();
 
-class ControllerRelatorios implements InterfaceController {
+class ControllerRelatorios extends AbstractAppController implements InterfaceController {
     private $view;
     private $model;
     private $telaUser;
@@ -24,7 +28,8 @@ class ControllerRelatorios implements InterfaceController {
     }
 
     /**
-     * Metodo implementado da interface define o comportamento do componente Categorias
+     * Metodo implementado da interface define o 
+     * comportamento do componente Categorias
      * 
      * {@inheritDoc}
      *
@@ -37,7 +42,8 @@ class ControllerRelatorios implements InterfaceController {
                 echo json_encode($this->verificaAcao());
             }
         } else {
-            $this->verificaAcesso();
+            $metodo = $this->verificaAcesso($this->acoes);
+            $this->$metodo();
         }
     }
 
@@ -66,26 +72,8 @@ class ControllerRelatorios implements InterfaceController {
     }
 
     /**
-     * Verifica a parte do site que o usuario esta tentando acessar, caso nao esteja tentando acessar nenhuma manda ele pra home de usuario
-     * 
-     * @param String $acesso Parte do site que o usuario esta tentando acessar
-     */
-    private function verificaAcesso() {
-        $metodo = 'home';
-        
-        if (isset($_GET['ac'])) {
-            $ac = htmlentities($_GET['ac']);
-            
-            if ($ac == 'categoria') {
-                $metodo = 'categoria';
-            }
-        }
-        
-        $this->$metodo();
-    }
-
-    /**
-     * Verifica a acao que o usuario esta tentando fazer, e ja aciona se existir e ja envia a requisicao para a model
+     * Verifica a acao que o usuario esta tentando fazer, 
+     * e ja aciona se existir e ja envia a requisicao para a model
      * 
      * @return bool|int
      */

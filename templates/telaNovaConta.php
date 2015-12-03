@@ -73,25 +73,25 @@
         ?>
         </div>
         <form action="" method="post" class="formLogin navbar-form navbar-right" id="formTelaLogin">
-            <div class="row row-login form-group">
+            <div class="row row-login form-group" id="nometNovaConta">
                 <input type="text" id="nomeNovaConta" name="nomeNovaConta" class="text novaConta form-control" placeholder="Nome" />
             </div>
             <div class="row row-login form-group">
                 <input type="text" id="sobrenomeNovaConta" name="sobrenomeNovaConta" class="text novaConta form-control" placeholder="Sobrenome" />
             </div>
-            <div class="row row-login form-group">
+            <div class="row row-login form-group" id="dataNascimentoNovaConta">
                 <input type="date" id="dataNascimentoNovaConta" name="dataNascimentoNovaConta" class="text novaConta form-control" placeholder="Data de nascimento" />
             </div>
             <div class="row row-login form-group">
                 <input type="email" id="emailNovaConta" name="emailNovaConta" class="text novaConta form-control" placeholder="e-mail" />
             </div>
-            <div class="row row-login form-group">
+            <div class="row row-login form-group" id="senhaNovaConta">
                 <input type="password" id="senhaNovaConta" name="senhaNovaConta" class="text novaConta form-control" placeholder="Senha" />
             </div>
-            <div class="row row-login form-group">
+            <div class="row row-login form-group" id="senha2NovaConta">
                 <input type="password" id="senha2NovaConta" name="senha2NovaConta" class="text novaConta form-control" placeholder="Repita a senha" />
             </div>
-            <div class="row row-login form-group">
+            <div class="row row-login form-group" id="submitNovaConta">
                 <a href="<?php echo BASE;?>" class="btn" id="link-normal">cancelar</a>
                 <input type="submit" name="submitNovaConta" class="submit submitConcluir btn btn-success" value="Cadastrar" />
             </div>
