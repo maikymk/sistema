@@ -85,10 +85,8 @@ define('ERRO_PADRAO', '500');
 
 //define a pasta padrao de imagens
 define('IMAGES', DIR_RAIZ.'images'.DS);
-//define a pasta padrao de imagens dos usuario
-define('IMAGES_USERS', IMAGES.'usuarios'.DS);
 //define a pasta padrao de imagens de ero
-define('IMAGES_ERRO', IMAGES.'erro'.DS);
+define('IMAGES_ERRO', BASE.'images'.DS.'erro'.DS);
 
 /**
  * PASTA DE CSS
