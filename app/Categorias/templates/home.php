@@ -5,7 +5,7 @@
 ?>
 <script type="text/javascript">
     var link = "<?php echo DIR_RAIZ.DS.'categorias'.DS.DS;?>";//monta o link principal
-    var erro = 'Erro! Tente novamente';
+    var erro = 'Erro! Recarregue sua página e tente novamente.';
         
     $(document).ready(function () {
         $('#nova-cat').click(function() {
@@ -127,7 +127,7 @@
                         nomeCat: texto1
                     },
                     function(data){
-                        if( data ){
+                        if( data.id ){
                             $('#edit-cat_'+data.id).removeAttr('style');
                             $('#texto-categoria-'+data.id).html(data.nome);
                         } else{

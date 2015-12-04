@@ -2,6 +2,7 @@
 /**
  * Controller principal, todas as solicitacoes passam por ele
  */
+
 require_once 'system' . DIRECTORY_SEPARATOR . 'config.php';
 require_once LIB . DS . 'autoload.php';
 
@@ -23,9 +24,7 @@ class ControllerFrame {
     public $view;
 
     public function __construct() {
-        if (! Sessao::verificaSessao()) {
-            Sessao::iniciaSessao();
-        }
+        Sessao::iniciaSessao();
         
         $this->model = new ModelFrame();
         $this->view = new ViewFrame();
@@ -35,8 +34,9 @@ class ControllerFrame {
      * Funcao que faz o frame iniciar seus processos
      */
     public function handle() {
-        //trata a requisicao do usuario pela URL
-        $this->trataUrl();
+        if (!$this->verificaErro()) {
+            $this->verificaPage();
+        }
         
         /**
          * Se tiver uma tela para ser exibida, envia ela para a view
@@ -49,20 +49,28 @@ class ControllerFrame {
             $this->view->montaTela();
         }
     }
-
+    
     /**
-     * Faz tratamento da url que o usuario esta tentando acessar
+     * Verifica se e para exibir alguma pagina de erro, se for ja seta ela
+     * 
+     * @return boolean
      */
-    private function trataUrl() {
+    private function verificaErro() {
         //verifica se ocorreu algum erro
         if (isset($_GET['erro'])) {
             $erro = htmlentities($_GET['erro']);
-            //verifica o erro que foi passado pelo $_GET via htaccess
-            $this->verificaErro($erro);
-        } elseif (!$this->verificaPage()) {
-            //seta a tela de login e passa o erro ocorrido
-            $this->setContainer($this->view->telaLogin($this->erroLogin));
+            //seta o erro que foi passado pelo $_GET via htaccess
+            $this->setErro($erro);
+            return true;
         }
+        return false;
+    }
+    
+    /**
+     * Seta a tela de login e passa o erro ocorrido se existir
+     */
+    private function setTelaLogin() {
+        $this->setContainer($this->view->telaLogin($this->erroLogin));
     }
 
     /**
@@ -71,61 +79,113 @@ class ControllerFrame {
      * @return bool
      */
     private function verificaPage() {
-        $return = false;
-        
         if (isset($_GET['page'])) {
-            $page = htmlentities($_GET['page']);
-            
-            //se ja tiver login, o usuario pode fazer logout ou acessar alguma page
-            if ($this->verificaLogin()) {
-                //verifica se esta fazendo logout
-                if ($page == 'logout') {
-                    Sessao::destroiSessao();
-                    header('Location: ' . DIR_RAIZ);
-                    $return = true;
-                } else {
-                    //valida a pagina que o usuario esta tentando acessar, se nao existir seta a padrao
-                    if (! $this->validaAcesso($page)) {
-                        //mostra o erro 404
-                        $this->verificaErro('404');
-                    }
-                }
-            } else {
-                // se nao tiver login, o usuario so pode fazer a acao de nova conta
-                if ($page == 'new-account') {
-                    $erroNovaConta = null;
-                    
-                    //envio de dados para cadastro sem ajax
-                    if (isset($_POST['submitNovaConta'])) {
-                        $this->model->validaNovaConta($_POST);
-                        //tela de criacao de conta
-                        $this->setContainer($this->view->telaNovaConta($erroNovaConta));
-                    } elseif (isset($_POST['validaNovaConta'])) {
-                        //envio de dados para cadastro via ajax
-                        $dados = $this->model->validaNovaConta($_POST);
-                        echo json_encode($dados);
-                    } else {
-                        //tela de criacao de conta
-                        $this->setContainer($this->view->telaNovaConta($erroNovaConta));
-                    }
-                } else {
-                    //se nao tiver login e tentar acessar alguma area do site, mostra o erro 404
-                    $this->verificaErro('404');
-                }
-            }
-            $return = true;
+            $this->existePage();
         } else {
-            //se nao existir page, tambem verifica se existe login
-            //nao existe um page, mas o usuario tem login, mostra pagina home pra ele
-            if ($this->verificaLogin()) {
-                //Passa a pagina padrao de acesso
-                $this->validaAcesso(PAGINA_PADRAO);
-                $return = true;
-            }
+            $this->naoExistePage();
         }
-        return $return;
+    }
+    
+    /**
+     * Coisas que o usuario podera ver se passar uma pagina pela url
+     */
+    private function existePage() {
+        $page = htmlentities($_GET['page']);
+        
+        /**
+         * verifica se o usuario ja tem login e a sessao dele nao expirou,
+         * assim o usuario pode fazer logout ou acessar alguma page
+         */
+        if ($this->validaAcessoUser() && $this->verificaLogin()) {
+            $this->acoesUsuarioLogado($page);
+        } else {
+            //usuario sem login so pode criar conta
+            $this->acoesUsuarioSemLogin($page);
+        }
+    }
+    
+    /**
+     * Coisas que o usuario podera ver se nao passar uma pagina pela url
+     */
+    private function naoExistePage() {
+        /**
+         * verifica se nao esta tentando logar e a sessao ja expirou,
+         * ou se nao existe login do usuario
+         * se acontecer algum dos casos mostra a tela de login
+         */
+        if (!$this->validaAcessoUser() || !$this->verificaLogin()) {
+            $this->setTelaLogin();
+        } else {
+            //Passa a pagina padrao de acesso
+            $this->validaAcesso(PAGINA_PADRAO);
+        }
+    }
+    
+    /**
+     * Valida se o usuario pode continuar acessando o site, 
+     * ou se ele precisa fazer login novamente
+     * 
+     * @return boolean
+     */
+    private function validaAcessoUser() {
+        if (isset($_POST['submitTelaLogin'])) {
+            return true;
+        } elseif (!Sessao::verificaTempoSessao()) {
+            return false;
+        }
+        return true;
     }
 
+    /**
+     * Verifica a pagina que o usuario logado esta acesssando
+     */
+    private function acoesUsuarioLogado($page) {
+        //verifica se esta fazendo logout
+        if ($page == 'logout') {
+            Sessao::destroiSessao();
+            header('Location: ' . DIR_RAIZ);
+            return true;
+        } else {
+            //valida a pagina que o usuario esta tentando acessar, se nao existir seta a padrao
+            if (!$this->validaAcesso($page)) {
+                //mostra o erro 404
+                $this->setErro('404');
+            }
+        }
+    }
+    
+    /**
+     * Valida a cao que o usuario que nao tem login esta executando
+     */
+    private function acoesUsuarioSemLogin($page) {
+        // se nao tiver login, o usuario so pode fazer a acao de nova conta
+        if ($page != 'new-account') {
+            $this->setTelaLogin();
+        } else {
+            $this->novaConta();
+        }
+    }
+    
+    /**
+     * Verifica a acao do usuario que esta tentando criar um nova conta
+     */
+    private function novaConta() {
+        $erroNovaConta = null;
+        
+        //envio de dados para cadastro via ajax
+        if (isset($_POST['validaNovaConta'])) {
+            $dados = $this->model->validaNovaConta($_POST);
+            echo json_encode($dados);
+        } else {
+            if ((isset($_POST['submitNovaConta']))) {
+                //envio de dados para cadastro sem ajax
+                $this->model->validaNovaConta($_POST);
+            }
+            //tela de criacao de conta
+            $this->setContainer($this->view->telaNovaConta($erroNovaConta));
+        }
+    }
+    
     /**
      * Instancia a classe que valida acesso do usuario, e verifica se ele está logando
      * 
@@ -183,7 +243,7 @@ class ControllerFrame {
      * 
      * @param String $erro Recebe um erro e valida ele pra apresentar sua tela. O erro padrao e 500 (Erro no servidor)
      */
-    private function verificaErro($erro = ERRO_PADRAO) {
+    private function setErro($erro = ERRO_PADRAO) {
         $telaErro = $this->model->validaErro($erro);
         //caminho das telas de erro.nome da tela de erro.extensao
         $telaErro = TELAS_ERRO . $telaErro . '.php';

@@ -79,16 +79,16 @@
             <div class="row row-login form-group">
                 <input type="text" id="sobrenomeNovaConta" name="sobrenomeNovaConta" class="text novaConta form-control" placeholder="Sobrenome" />
             </div>
-            <div class="row row-login form-group" id="dataNascimentoNovaConta">
+            <div class="row row-login form-group" id="divDataNascimentoNovaConta">
                 <input type="date" id="dataNascimentoNovaConta" name="dataNascimentoNovaConta" class="text novaConta form-control" placeholder="Data de nascimento" />
             </div>
             <div class="row row-login form-group">
                 <input type="email" id="emailNovaConta" name="emailNovaConta" class="text novaConta form-control" placeholder="e-mail" />
             </div>
-            <div class="row row-login form-group" id="senhaNovaConta">
+            <div class="row row-login form-group" id="divSenhaNovaConta">
                 <input type="password" id="senhaNovaConta" name="senhaNovaConta" class="text novaConta form-control" placeholder="Senha" />
             </div>
-            <div class="row row-login form-group" id="senha2NovaConta">
+            <div class="row row-login form-group" id="divSenha2NovaConta">
                 <input type="password" id="senha2NovaConta" name="senha2NovaConta" class="text novaConta form-control" placeholder="Repita a senha" />
             </div>
             <div class="row row-login form-group" id="submitNovaConta">

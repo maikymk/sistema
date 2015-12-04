@@ -40,7 +40,7 @@ $nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : '');
                     <a class="navbar-brand" href="<?php echo BASE;?>">Sistema</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
-                    <?php if (Sessao::buscaSessao('email')) {?>
+                    <?php if (Sessao::verificaTempoSessao()) {?>
                     <ul class="nav navbar-nav">
                         <li <?php echo $categorias;?>><a href="<?php echo BASE.'categorias'?>">Categorias</a></li>
                         <li <?php echo $lancamentos;?>><a href="<?php echo BASE.'lancamentos'?>">Lan&ccedil;amentos</a></li>
