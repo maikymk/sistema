@@ -5,7 +5,7 @@
 ?>
 <script type="text/javascript">
     var link = "<?php echo DIR_RAIZ.DS.'categorias'.DS.DS;?>";//monta o link principal
-    var erro = 'Erro! Recarregue sua página e tente novamente.';
+    var erro = 'Erro! Recarregue a pagina e tente novamente.';
         
     $(document).ready(function () {
         $('#nova-cat').click(function() {
@@ -127,13 +127,12 @@
                         nomeCat: texto1
                     },
                     function(data){
-                        if( data.id ){
+                        if ( data.id ) {
                             $('#edit-cat_'+data.id).removeAttr('style');
                             $('#texto-categoria-'+data.id).html(data.nome);
-                        } else{
-                            erroEditar(data.id);
-                            $('#texto-categoria-'+data.id).html();
+                        } else {
                             alert(erro);
+                            $('#texto-categoria-'+id).html(texto);
                         }
                     }, "json");
                 }

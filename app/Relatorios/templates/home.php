@@ -41,7 +41,7 @@ $tipo = isset($_GET['filtro']) ? (int) htmlentities($_GET['filtro']) : '';
             </div>
             <?php }?>
             <div class="row col-md-2 mk-cle-rig">
-                <a href="<?php echo BASE.'relatorios';?>" class="btn btn-default mk-mar-top-20">voltar</a>
+                <a href="<?php echo BASE.'relatorios';?>" class="btn btn-default mk-mar-top-20">limpar</a>
             </div>
         </div>
     </div>

@@ -1,8 +1,6 @@
 .settings/
 .buildpath
 .project
-lib/
-system/
 .sonar
 
 # Compiled source #

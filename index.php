@@ -34,19 +34,24 @@ class ControllerFrame {
      * Funcao que faz o frame iniciar seus processos
      */
     public function handle() {
-        if (!$this->verificaErro()) {
-            $this->verificaPage();
+        if ($telaErro = $this->verificaErro()) {
+            $this->container = $telaErro;
+        } else {
+            $this->container = $this->verificaPage();
         }
         
         /**
-         * Se tiver uma tela para ser exibida, envia ela para a view
-         * Se nao tiver, pode ser uma requisicao ajax, ai nao exibe a tela
+         * Se tiver um retono numerico, e requisicao ajax
+         * Requisicao nao ajax monta a tela para o usuario
          */
-        if ($this->container) {
+        if (!is_numeric($this->container)) {
             //coloca o conteudo que o usuario acessou para ser exibido
             $this->view->setContainer($this->container);
             //monta a tela a ser exibida ao usuario
             $this->view->montaTela();
+        } elseif ($this->container == 0) {
+            //se for igual a zero, e uma requisicao ajax, mas o tempo de login esgotou
+            echo 0;
         }
     }
     
@@ -60,8 +65,7 @@ class ControllerFrame {
         if (isset($_GET['erro'])) {
             $erro = htmlentities($_GET['erro']);
             //seta o erro que foi passado pelo $_GET via htaccess
-            $this->setErro($erro);
-            return true;
+            return $this->setErro($erro);
         }
         return false;
     }
@@ -70,7 +74,7 @@ class ControllerFrame {
      * Seta a tela de login e passa o erro ocorrido se existir
      */
     private function setTelaLogin() {
-        $this->setContainer($this->view->telaLogin($this->erroLogin));
+        return $this->view->telaLogin($this->erroLogin);
     }
 
     /**
@@ -80,9 +84,9 @@ class ControllerFrame {
      */
     private function verificaPage() {
         if (isset($_GET['page'])) {
-            $this->existePage();
+            return $this->existePage();
         } else {
-            $this->naoExistePage();
+            return $this->naoExistePage();
         }
     }
     
@@ -97,10 +101,10 @@ class ControllerFrame {
          * assim o usuario pode fazer logout ou acessar alguma page
          */
         if ($this->validaAcessoUser() && $this->verificaLogin()) {
-            $this->acoesUsuarioLogado($page);
+            return $this->acoesUsuarioLogado($page);
         } else {
             //usuario sem login so pode criar conta
-            $this->acoesUsuarioSemLogin($page);
+            return $this->acoesUsuarioSemLogin($page);
         }
     }
     
@@ -114,10 +118,10 @@ class ControllerFrame {
          * se acontecer algum dos casos mostra a tela de login
          */
         if (!$this->validaAcessoUser() || !$this->verificaLogin()) {
-            $this->setTelaLogin();
+            return $this->setTelaLogin();
         } else {
             //Passa a pagina padrao de acesso
-            $this->validaAcesso(PAGINA_PADRAO);
+            return $this->validaAcesso(PAGINA_PADRAO);
         }
     }
     
@@ -146,11 +150,12 @@ class ControllerFrame {
             header('Location: ' . DIR_RAIZ);
             return true;
         } else {
-            //valida a pagina que o usuario esta tentando acessar, se nao existir seta a padrao
-            if (!$this->validaAcesso($page)) {
-                //mostra o erro 404
-                $this->setErro('404');
+            //valida a pagina que o usuario esta tentando acessar, se nao existir retorna erro 404
+            if ($pageUser = $this->validaAcesso($page)) {
+                return $pageUser;
             }
+            //mostra o erro 404
+            return $this->setErro('404');
         }
     }
     
@@ -159,11 +164,13 @@ class ControllerFrame {
      */
     private function acoesUsuarioSemLogin($page) {
         // se nao tiver login, o usuario so pode fazer a acao de nova conta
-        if ($page != 'new-account') {
-            $this->setTelaLogin();
-        } else {
-            $this->novaConta();
+        if ($page == 'new-account') {
+            return $this->novaConta();
+        } elseif (isset($_GET['aj'])) {
+            //requisicao feita por ajax, nao mostra tela de login, so retorna 0
+            return 0;
         }
+        return $this->setTelaLogin();
     }
     
     /**
@@ -176,13 +183,14 @@ class ControllerFrame {
         if (isset($_POST['validaNovaConta'])) {
             $dados = $this->model->validaNovaConta($_POST);
             echo json_encode($dados);
+            return 1;
         } else {
             if ((isset($_POST['submitNovaConta']))) {
                 //envio de dados para cadastro sem ajax
                 $this->model->validaNovaConta($_POST);
             }
             //tela de criacao de conta
-            $this->setContainer($this->view->telaNovaConta($erroNovaConta));
+            return $this->view->telaNovaConta($erroNovaConta);
         }
     }
     
@@ -202,9 +210,13 @@ class ControllerFrame {
     }
 
     /**
-     * Valida a pagina que o usuario esta tentando acessar, se nao encontrar passa a pagina padrao 'Usuario'
+     * Valida a pagina que o usuario esta tentando acessar, 
+     * se a pagina que o usuario acessou nao devolver uma tela,
+     * seta o valor 1, assumindo assim que se trata de uma requisicao ajax,
+     * mas se nao encontrar a pagina que o usuario solicitou retorna false
      * 
      * @param String $acesso Nome do componente que o usuario esta tentando acessar
+     * @return string|int|bool
      */
     private function validaAcesso($acesso) {
         $componente = ucfirst($acesso);
@@ -219,23 +231,13 @@ class ControllerFrame {
             $obj = new $class();
             $obj->handle();
             
-            //se tiver um retorno de tela, passa para a variavel responsavel usando o metodo
             if ($tela = $obj->mostraTela()) {
-                $this->setContainer($tela);
+                return $tela;
             }
             
-            return true;
+            return 1;
         }
         return false;
-    }
-
-    /**
-     * Seta a pagina que sera mostrada ao usuario na variavel $container
-     * 
-     * @param String $container Tela a ser exibida
-     */
-    private function setContainer($container) {
-        $this->container = $container;
     }
 
     /**
@@ -248,7 +250,7 @@ class ControllerFrame {
         //caminho das telas de erro.nome da tela de erro.extensao
         $telaErro = TELAS_ERRO . $telaErro . '.php';
         //salva no conteudo da pagina a tela de erro
-        $this->setContainer($this->view->telaErro($telaErro));
+        return $this->view->telaErro($telaErro);
     }
 }
 
