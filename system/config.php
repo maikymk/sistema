@@ -50,8 +50,8 @@ define('QUERY', DIR_RAIZ.'SYSTEM'.DS.'query.php');
 
 //define o tipo da sessao
 define('CACHE_USER_TYPE', 'nocache');
-//define o tempo para expirar a sessao
-define('CACHE_USER_EXPIRES', 1);
+//define o tempo para expirar a sessao, em minutos
+define('CACHE_USER_EXPIRES', 15);
 
 /**
  * Tela de login
