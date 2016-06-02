@@ -1,9 +1,9 @@
-<?php 
+<?php
 //imprime a tela para criar uma nova conta para o usuario
 ?>
 <script type="text/javascript">
-    var link = "<?php echo DIR_RAIZ.DS;?>";//monta o link
-    
+    var link = "<?php echo DIR_RAIZ;?>";//monta o link
+
     $(document).ready(function () {
         $('#formTelaLogin').submit(function() {
             var nome = '';
@@ -36,7 +36,7 @@
                 validaNovaConta: 1
             }, function(data) {
                 var html = '';
-                
+
                 if( data == 1 ){
                     html = '<p class="msgLogin sucessoLogin bg-success">Tudo certo por aqui!! :)</p>';
                     window.location.href = link;
@@ -50,7 +50,7 @@
 
                 $('.msgNovaConta').html(html);
             }, "json");
-            
+
             return false;
         });
     });

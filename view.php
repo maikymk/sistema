@@ -2,14 +2,13 @@
 
 class ViewFrame {
     private $erroLogin;
-    private $erroNovaConta;
     public $container;
 
     public function __construct() {}
 
     /**
      * Adiciona a tela de login e retorna seu conteudo
-     * 
+     *
      * @return HTML Retorna o conteudo do arquivo
      */
     public function telaLogin($erroLog = null) {
@@ -18,19 +17,8 @@ class ViewFrame {
     }
 
     /**
-     * Adiciona a tela de nova conta e retorna seu conteudo
-     * 
-     * @param array $erro Se houver ao cadastra uma nova conta ele sera exibido
-     * @return HTML Retorna o conteudo do arquivo
-     */
-    public function telaNovaConta($erro = array()) {
-        $this->erroNovaConta = $erro;
-        return $this->retornaTela(TELA_NOVA_CONTA);
-    }
-
-    /**
      * Adiciona a tela de erro
-     * 
+     *
      * @param String $telaErro Caminho do arquivo a ser exibido
      * @return Html Retorna o conteudo do arquivo
      */
@@ -40,7 +28,7 @@ class ViewFrame {
 
     /**
      * Recebe o caminho de um arquivo e retorna o seu conteudo
-     * 
+     *
      * @param String $arq Arquivo para pegar o conteudo
      * @return HTML Retorna o conteudo do arquivo
      */
@@ -49,17 +37,18 @@ class ViewFrame {
         require_once $arq;
         $html = ob_get_contents();
         ob_end_clean();
-        
+
         return $html;
     }
 
     /**
-     * Coloca o conteudo que o usuario vera na tela na variavel $container
-     * 
-     * @param String $container Conteudo a ser exibido na tela para o usuario
+     * Busca o conteudo do arquivo passado
+     *
+     * @param String $arquivo Caminho do arquivo a ser buscado o
+     * conteudo para ser exibido na tela para o usuario
      */
-    public function setContainer($container) {
-        $this->container = $container;
+    public function setContainer($arquivo) {
+        $this->container = $this->retornaTela($arquivo);
     }
 
     /**

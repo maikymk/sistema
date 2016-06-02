@@ -3,7 +3,7 @@
 /**
  *
  * Classe para fazer verificacao de arquivos e diretorios
- * 
+ *
  * @author maikysilva
  *
  */
@@ -13,7 +13,7 @@ class ArquivosDiretorio {
 
     /**
      * Salva o diretorio atual para fazer busca dos arquivos nele
-     * 
+     *
      * @param String $dir Caminho do diretorio
      */
     public static function setDir($dir) {
@@ -23,7 +23,7 @@ class ArquivosDiretorio {
     /**
      * Seta as extensaoes aceitas na variavel $exts.
      * As extensoes precisam vir com o '.' antes do tipo. Ex: .php
-     * 
+     *
      * @param array() $exts Extensoes de arquivos aceitas
      */
     public static function setExtensions($exts) {
@@ -38,10 +38,10 @@ class ArquivosDiretorio {
      * Busca todos os arquivos que existem dentro desse diretorio
      */
     public static function getFiles() {
-        //pega todos os arquivos e pastas do diretório
+        //pega todos os arquivos e pastas do diretï¿½rio
         $files = scandir(static::$dir);
         $allFiles = null;
-        
+
         if (empty(static::$exts)) {
             foreach ($files as $key => $file) {
                 //monta o caminho com o nome do arquivo
@@ -55,19 +55,19 @@ class ArquivosDiretorio {
             foreach ($files as $key => $file) {
                 //monta o caminho com o nome do arquivo
                 $f = static::$dir . $file;
-                
+
                 if (static::validaArquivo($f) && $fil = static::validaExtensao($file)) {
                     $allFiles[] = $fil;
                 }
             }
         }
-        
+
         return $allFiles;
     }
 
     /**
      * Verifica se o diretorio passado existe
-     * 
+     *
      * @param String $dir Nome do diretorio a ser verificado
      */
     public static function validaDiretorio($dir) {
@@ -78,8 +78,8 @@ class ArquivosDiretorio {
     }
 
     /**
-     * Valida se o arquivo existe e se ele não é uma pasta oculta
-     * 
+     * Valida se o arquivo existe e se ele nao e uma pasta oculta
+     *
      * @param String $file Caminho completo do arquivo
      * @return boolean Arquivo valido ou invalido
      */
@@ -91,19 +91,19 @@ class ArquivosDiretorio {
     }
 
     /**
-     * Faz validacao se a extensao sendo passada 
+     * Faz validacao se a extensao sendo passada
      * e compativel com a(s) definida(s) pelo usuario
-     * 
+     *
      * @param String $extFile Arquivo a ser verificada a extensao
      * @return array() Todos os arquivos com extensao valida
      */
     private static function validaExtensao($file) {
         preg_match('@^[a-zA-Z]+\.([a-zA-z]+)@', $file, $extFile);
-        
+
         if (! empty($extFile)) {
             $extFile = '.' . strtolower($extFile[1]);
         }
-        
+
         if (in_array($extFile, static::$exts)) {
             return $file;
         } else {

@@ -11,23 +11,18 @@
 define('DS', DIRECTORY_SEPARATOR);
 
 /**
- * Define o diretorio raiz 
+ * Define o diretorio raiz
  */
 define('DIR_RAIZ', '.'.DS);
 
 /**
- * Define onde sera armazenado os dados - BD|JSON
- */
-define('SALVA_DADOS', 'bd');
-
-/**
  * BANCO DE DADOS
  */
-define('HOST', 'localhost');
-define('USER', 'root');
-define('PASSWORD', '');
-define('BD', 'sistema');
-define('PORT', 3306);
+define('HOST',     'localhost');
+define('USER',     'root');
+define('PASSWORD', 'root');
+define('BD',       'bd_sys');
+define('PORT',     3306);
 
 /**
  * Define a pasta do site
@@ -35,49 +30,30 @@ define('PORT', 3306);
 define('SITE', DIR_RAIZ.'sistema'.DS);
 
 /**
- * Define a url inicial do site
- */
-define('BASE', 'http:'.DS.DS.'localhost'.DS.'sistema'.DS);
-
-/**
  * Classe que faz conexao e consultas no BD
  */
 define('QUERY', DIR_RAIZ.'SYSTEM'.DS.'query.php');
 
 /**
- * CONFIGURACOES DE CACHE
+ * PASTA PADRÃO DOS TEMPLATES
  */
-
-//define o tipo da sessao
-define('CACHE_USER_TYPE', 'nocache');
-//define o tempo para expirar a sessao, em minutos
-define('CACHE_USER_EXPIRES', 15);
+define('TEMPLATES', DIR_RAIZ.'templates'.DS);
 
 /**
  * Tela de login
  */
-define('TELA_LOGIN', DIR_RAIZ.'templates'.DS.'telaLogin.php');
-
-/**
- * Pagina padrao de acesso
- */
-define('PAGINA_PADRAO', 'Categorias');
+define('TELA_LOGIN', TEMPLATES.'telaLogin.php');
 
 /**
  * Tela de nova conta
  */
-define('TELA_NOVA_CONTA', DIR_RAIZ.'templates'.DS.'telaNovaConta.php');
+define('TELA_NOVA_CONTA', TEMPLATES.'telaNovaConta.php');
 define('DATA_MINIMA_NOVA_CONTA', date('Y-m-d', strtotime('-18 years')));
 
 /**
  * PASTA COM AS TELAS DE ERRO
  */
-define('TELAS_ERRO', DIR_RAIZ.'templates'.DS.'telas_erro'.DS);
-
-/**
- * ERRO PADRAO DE REQUISICAO
- */
-define('ERRO_PADRAO', '500');
+define('TELAS_ERRO', TEMPLATES.'telas_erro'.DS);
 
 /**
  * PASTA DE IMAGENS
@@ -86,17 +62,17 @@ define('ERRO_PADRAO', '500');
 //define a pasta padrao de imagens
 define('IMAGES', DIR_RAIZ.'images'.DS);
 //define a pasta padrao de imagens de ero
-define('IMAGES_ERRO', BASE.'images'.DS.'erro'.DS);
+define('IMAGES_ERRO', IMAGES.'erro'.DS);
 
 /**
  * PASTA DE CSS
  */
-define('CSS', BASE.'css'.DS);
+define('CSS', DIR_RAIZ.'css'.DS);
 
 /**
  * PASTA DE JS
  */
-define('JS', BASE.'js'.DS);
+define('JS', DIR_RAIZ.'js'.DS);
 
 /**
  * PASTA DE COMPONENTES
@@ -129,20 +105,3 @@ define('LIB', DIR_RAIZ.'lib'.DS);
 
 //define a pasta das bibliotecas
 define('SYSTEM', DIR_RAIZ.'system'.DS);
-
-/**
- * PASTA DO WEBSERVICE
- */
-
-//define a pasta do webservice
-define('WEB_SERVICE', DIR_RAIZ.'webservice'.DS);
-
-/**
- * ARQUIVO JSON
- */
-define('JSON', DIR_RAIZ.'json'.DS.'bd.json');
-
-/**
- * Tamanho maximo da descricao do lancamento
- */
-define('TAM_MAX_DESC', 100);

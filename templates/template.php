@@ -1,20 +1,4 @@
 <?php
-/*
- * verifica se o usuario esta no link das categoria, 
- * se estiver adiciona uma classe de ativo ao link
- */ 
-$categorias = ((empty($_GET['page']) || strcasecmp($_GET['page'], 'categorias') == 0) ? 'class="active"' : "");
-/**
- * verifica se o usuario esta no link dos lancamentos, 
- * se estiver adiciona uma classe de ativo ao link
- */
-$lancamentos = ((! empty($_GET['page']) && strcasecmp($_GET['page'], 'lancamentos') == 0) ? 'class="active"' : "");
-/**
- * verifica se o usuario esta no link dos relatorios, 
- * se estiver adiciona uma classe de ativo ao link
- */
-$relatorios = ((! empty($_GET['page']) && strcasecmp($_GET['page'], 'relatorios') == 0) ? 'class="active"' : "");
-
 //recupera o nome do usuario logado
 $nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : '');
 ?>
@@ -42,9 +26,6 @@ $nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : '');
                 <div id="navbar" class="collapse navbar-collapse">
                     <?php if (Sessao::verificaTempoSessao()) {?>
                     <ul class="nav navbar-nav">
-                        <li <?php echo $categorias;?>><a href="<?php echo BASE.'categorias'?>">Categorias</a></li>
-                        <li <?php echo $lancamentos;?>><a href="<?php echo BASE.'lancamentos'?>">Lan&ccedil;amentos</a></li>
-                        <li <?php echo $relatorios;?>><a href="<?php echo BASE.'relatorios'?>">Relat&oacute;rios</a></li>
                     </ul>
                     <ul id="ul-logout" class="nav navbar-nav pull-right">
                         <li><label id="nomeUser" class="mk-mar-top-15 color-fff">Bem vindo, <?php echo $nomeUsuario;?></label></li>
