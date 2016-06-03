@@ -22,10 +22,14 @@ class ControllerFrame {
     public $view;
 
     public function __construct() {
+    	error_reporting(E_ALL);
+    	ini_set("display_errors", true);
+    	ini_set("error_reporting", E_ALL & ~E_STRICT);
+
     	Sessao::iniciaSessao();
 
         $this->model = new ModelFrame();
-        $this->view = new ViewFrame();
+        $this->view  = new ViewFrame();
     }
 
     /**
@@ -201,20 +205,20 @@ class ControllerFrame {
         $arq = APP . $componente . DS . 'index.php';
 
         if (is_file($arq)) {
-            require_once $arq;
+        	require_once $arq;
 
-            //Monta o nome da classe a ser instanciada
-            $class = 'Controller' . $componente;
-            $obj = new $class();
-            $obj->handle();
+        	//Monta o nome da classe a ser instanciada
+        	$class = 'Controller' . $componente;
+        	$obj   = new $class();
+        	$obj->handle();
 
-            if ($tela = $obj->mostraTela()) {
-                return $tela;
-            }
-
-            return 1;
+        	$tela = $obj->mostraTela();
+        	if ($tela) {
+        		return $tela;
+        	}
         }
-        return false;
+        //retorna o erro padrao
+        return $this->setErro();
     }
 
     /**
@@ -225,10 +229,8 @@ class ControllerFrame {
      */
     private function setErro($erro = ERRO_PADRAO) {
         $telaErro = $this->model->validaErro($erro);
-        //caminho das telas de erro.nome da tela de erro.extensao
-        $telaErro = TELAS_ERRO . $telaErro . '.php';
-        //salva no conteudo da pagina a tela de erro
-        return $this->view->telaErro($telaErro);
+        //caminho da tela de erro
+        return TELAS_ERRO . $telaErro . '.php';
     }
 }
 

@@ -1,30 +1,9 @@
 <?php
 
 class ViewFrame {
-    private $erroLogin;
     public $container;
 
     public function __construct() {}
-
-    /**
-     * Adiciona a tela de login e retorna seu conteudo
-     *
-     * @return HTML Retorna o conteudo do arquivo
-     */
-    public function telaLogin($erroLog = null) {
-        $this->erroLogin = $erroLog;
-        return $this->retornaTela(TELA_LOGIN);
-    }
-
-    /**
-     * Adiciona a tela de erro
-     *
-     * @param String $telaErro Caminho do arquivo a ser exibido
-     * @return Html Retorna o conteudo do arquivo
-     */
-    public function telaErro($telaErro) {
-        return $this->retornaTela($telaErro);
-    }
 
     /**
      * Recebe o caminho de um arquivo e retorna o seu conteudo
