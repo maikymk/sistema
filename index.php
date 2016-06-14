@@ -212,9 +212,9 @@ class ControllerFrame {
         	$obj   = new $class();
         	$obj->handle();
 
-        	$tela = $obj->mostraTela();
-        	if ($tela) {
-        		return $tela;
+        	$nomeTela = $obj->getNomeTela();
+        	if ($nomeTela) {
+        		return $nomeTela;
         	}
         }
         //retorna o erro padrao

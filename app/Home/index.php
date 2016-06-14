@@ -18,7 +18,7 @@ class ControllerHome extends AbstractAppController implements InterfaceControlle
 	private $telas      = ["home"];
 	//caminho para os templates desse componente
 	private $templates;
-	private $telaAtual;
+	private $telaSolicitada;
 
 	public function __construct() {
 		$this->templates = APP . 'Home' . DS . 'templates' . DS;
@@ -30,10 +30,11 @@ class ControllerHome extends AbstractAppController implements InterfaceControlle
 	 * @see InterfaceController::handle()
 	 */
 	public function handle() {
+		// se existir a solicitação de uma tela específica via GET, senão mostra a padrão
 		if (!empty($_GET["ac"]) && in_array($_GET["ac"], $this->telas)) {
-			$this->telaAtual = htmlentities($_GET["ac"]) . '.php';
+			$this->telaSolicitada = htmlentities($_GET["ac"]) . '.php';
 		} else {
-			$this->telaAtual = $this->telaPadrao . '.php';
+			$this->telaSolicitada = $this->telaPadrao . '.php';
 		}
 	}
 
@@ -42,7 +43,7 @@ class ControllerHome extends AbstractAppController implements InterfaceControlle
 	 *
 	 * @see InterfaceController::mostraTela()
 	 */
-	public function mostraTela() {
-		return $this->templates . $this->telaAtual;
+	public function getNomeTela() {
+		return $this->templates . $this->telaSolicitada;
 	}
 }

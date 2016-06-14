@@ -2,7 +2,7 @@
 
 /**
  * Forca os controllers que implementarem a terem todos o mesmo padrao
- * 
+ *
  * @author maikysilva
  *
  */
@@ -14,9 +14,9 @@ interface InterfaceController {
     function handle();
 
     /**
-     * Retorna a tela que foi acessada
-     * 
-     * @return HTML Conteudo da tela
+     * Retorna o nome do arquivo que irá ser renderizado
+     *
+     * @return String Nome do arquivo
      */
-    function mostraTela();
+    function getNomeTela();
 }
