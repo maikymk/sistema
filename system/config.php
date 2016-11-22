@@ -20,19 +20,32 @@ define('DIR_RAIZ', '.'.DS);
  */
 define('HOST',     'localhost');
 define('USER',     'root');
-define('PASSWORD', 'root');
-define('BD',       'bd_sys');
+define('PASSWORD', '');
+define('BD',       'sistema');
 define('PORT',     3306);
 
 /**
- * Define a pasta do site
+ * Define a url inicial do site
  */
-define('SITE', DIR_RAIZ.'sistema'.DS);
+define('BASE', 'http://localhost'.DS.'sistema'.DS);
+
+/**
+ * Define o controller padrão do site
+ */
+define('CONTROLLER_PADRAO', 'Home');
 
 /**
  * Classe que faz conexao e consultas no BD
  */
 define('QUERY', DIR_RAIZ.'SYSTEM'.DS.'query.php');
+
+/**
+ * CONFIGURACOES DE CACHE
+ */
+//define o tipo da sessao
+define('CACHE_USER_TYPE', 'nocache');
+//define o tempo para expirar a sessao, em minutos
+define('CACHE_USER_EXPIRES', 15);
 
 /**
  * PASTA PADRÃO DOS TEMPLATES
@@ -48,12 +61,17 @@ define('TELA_LOGIN', TEMPLATES.'telaLogin.php');
  * Tela de nova conta
  */
 define('TELA_NOVA_CONTA', TEMPLATES.'telaNovaConta.php');
-define('DATA_MINIMA_NOVA_CONTA', date('Y-m-d', strtotime('-18 years')));
+define('IDADE_MINIMA_NOVA_CONTA', date('Y-m-d', strtotime('-18 years')));
 
 /**
  * PASTA COM AS TELAS DE ERRO
  */
 define('TELAS_ERRO', TEMPLATES.'telas_erro'.DS);
+
+/**
+ * ERRO PADRAO DE REQUISICAO
+ */
+define('ERRO_PADRAO', '500');
 
 /**
  * PASTA DE IMAGENS

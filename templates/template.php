@@ -5,12 +5,12 @@ $nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : '');
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<link rel="stylesheet" href="<?php echo CSS.'css.css';?>" type="text/css">
-<link rel="stylesheet" href="<?php echo CSS.'bootstrap.css';?>" type="text/css">
-<link rel="icon" href="<?php echo BASE.'favicon.ico';?>">
+<link rel="stylesheet" href="<?=CSS.'css.css';?>" type="text/css">
+<link rel="stylesheet" href="<?=CSS.'bootstrap.css';?>" type="text/css">
+<link rel="icon" href="<?=BASE.'favicon.ico';?>">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<script type="text/javascript" src="<?php echo JS.'jquery-2.1.4.min.js'?>"></script>
-<script type="text/javascript" src="<?php echo JS.'bootstrap.js'?>"></script>
+<script type="text/javascript" src="<?=JS.'jquery-2.1.4.min.js'?>"></script>
+<script type="text/javascript" src="<?=JS.'bootstrap.js'?>"></script>
 <title>MK - Sistema 1</title>
 </head>
 <body>
@@ -21,22 +21,22 @@ $nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : '');
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Sistema</span> <span class="icon-bar"></span> <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo BASE;?>">Sistema</a>
+                    <a class="navbar-brand" href="<?=BASE;?>">Sistema</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <?php if (Sessao::verificaTempoSessao()) {?>
                     <ul class="nav navbar-nav">
                     </ul>
                     <ul id="ul-logout" class="nav navbar-nav pull-right">
-                        <li><label id="nomeUser" class="mk-mar-top-15 color-fff">Bem vindo, <?php echo $nomeUsuario;?></label></li>
-                        <li><a id="logout" role="button" href="<?php echo BASE.'logout'?>">Logout</a></li>
+                        <li><label id="nomeUser" class="mk-mar-top-15 color-fff">Bem vindo, <?=$nomeUsuario;?></label></li>
+                        <li><a id="logout" role="button" href="<?=BASE.'logout'?>">Logout</a></li>
                     </ul>
                     <?php }?>
                 </div>
             </div>
         </nav>
         <div class="container-mk">
-            <?php echo $this->container; ?>
+            <?=$this->container; ?>
         </div>
     </div>
     <div class="rodapeFrame"></div>

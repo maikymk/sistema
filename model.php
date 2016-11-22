@@ -5,7 +5,7 @@ class ModelFrame {
 	 * Chama o método que cria constantes com as variáveis definidas no BD
 	 */
 	public function __construct() {
-		$this->geraConstantes();
+		//$this->geraConstantes();
 	}
 
 	/**

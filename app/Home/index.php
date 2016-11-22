@@ -1,6 +1,6 @@
 <?php
 /**
- * Faz autoload nas pasta passadas como key para o array,
+ * Faz autoload nas pastas passadas como key para o array,
  * e busca os arquivos que estao como chave.
  * Passando vazio busca todos da pasta
  */
@@ -17,12 +17,10 @@ class ControllerHome extends AbstractAppController implements InterfaceControlle
 	private $telaPadrao = 'home';
 	private $telas      = ["home"];
 	//caminho para os templates desse componente
-	private $templates;
+	private $templates = APP . 'Home' . DS . 'templates' . DS;
 	private $telaSolicitada;
 
-	public function __construct() {
-		$this->templates = APP . 'Home' . DS . 'templates' . DS;
-	}
+	public function __construct() {}
 
 	/**
 	 * {@inheritDoc}

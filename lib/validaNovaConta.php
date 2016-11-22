@@ -64,7 +64,7 @@ class ValidaNovaConta {
         
         if (! checkdate($mes, $dia, $ano)) {
             $this->erros[] = 'Preencha a data corretamente';
-        } elseif (($data > DATA_MINIMA_NOVA_CONTA)) {
+        } elseif (($data > IDADE_MINIMA_NOVA_CONTA)) {
             $this->erros[] = 'A idade minima para cadastro &eacute; 18 anos';
         }
     }
