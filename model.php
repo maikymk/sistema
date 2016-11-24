@@ -36,7 +36,7 @@ class ModelFrame {
 			// retorna os erros que aconteceram ao tentar criar uma nova conta
 			return $erros;
 		}
-		// retorna 1 se incluir com sucesso, ou 0 se der erro
+		
 		return $novaConta->criaNovaConta ($dados);
 	}
 

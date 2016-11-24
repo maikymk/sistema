@@ -22,7 +22,7 @@ class ControllerFrame {
     public $view;
 
     public function __construct() {
-    	error_reporting(E_ALL);
+        error_reporting(E_ALL);
     	ini_set("display_errors", true);
     	ini_set("error_reporting", E_ALL & ~E_STRICT);
 
@@ -36,7 +36,9 @@ class ControllerFrame {
      * Funcao que faz o frame iniciar seus processos
      */
     public function handle() {
-        if ($telaErro = $this->verificaErro()) {
+        $telaErro = $this->verificaErro();
+
+        if ($telaErro) {
             $arquivo = $telaErro;
         } else {
             $arquivo = $this->verificaPage();
@@ -146,7 +148,10 @@ class ControllerFrame {
             return true;
         } else {
             //valida a pagina que o usuario esta tentando acessar, se nao existir retorna erro 404
-            if ($pageUser = $this->validaAcesso($page)) {
+
+            $pageUser = $this->validaAcesso($page);
+
+            if ($pageUser) {
                 return $pageUser;
             }
             //mostra o erro 404
@@ -169,11 +174,18 @@ class ControllerFrame {
      * Verifica a acao do usuario que esta tentando criar um nova conta
      */
     private function novaConta() {
-        //envio de dados para cadastro via ajax
-        if (isset($_POST['validaNovaConta'])) {
-            $dados = $this->model->validaNovaConta($_POST);
-            echo json_encode($dados);
-            exit;
+        
+        if (isset($_POST['submitNovaConta'])) {
+            //envio de dados para cadastro via ajax
+            $erros = $this->model->validaNovaConta($_POST);
+            
+            // se todos os dados estiverem corretos retorna o usuário para a tela padrão
+            if ($erros === true) {
+                header("Location: " . BASE);
+                exit;
+            }
+
+            $this->view->setErros($erros);
         }
 
         //tela de criacao de conta

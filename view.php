@@ -2,6 +2,7 @@
 
 class ViewFrame {
     public $container;
+    public $erros = NULL;
 
     public function __construct() {}
 
@@ -35,5 +36,16 @@ class ViewFrame {
      */
     public function montaTela() {
         require_once 'templates' . DS . 'template.php';
+    }
+
+    /**
+     * Seta os erros que serão exibidos na tela
+     *
+     * @param array $erros
+     */
+    public function setErros($erros) {
+        if (!empty($erros)) {
+            $this->erros = $erros;
+        }
     }
 }

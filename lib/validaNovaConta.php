@@ -102,7 +102,7 @@ class ValidaNovaConta {
      * Cria uma nova conta para o usuario
      * 
      * @param array() $dados Dados que o usuario envio
-     * @return int
+     * @return bool
      */
     public function criaNovaConta($dadosUser) {
         $senha = md5($dadosUser['senhaNovaConta']);
@@ -120,9 +120,8 @@ class ValidaNovaConta {
             Sessao::adicionaSessao(array('email' => $dadosUser['emailNovaConta'], 'senha' => $senha));
             //salva o tempo de duracao da sessao
             Sessao::setTempoSessao();
-            return 1;
+            return true;
         }
-        return 0;
     }
 
     /**

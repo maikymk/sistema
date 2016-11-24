@@ -1,8 +1,3 @@
-<?php
-/**
- * Exibe a tela de login para o usuario
- */
-?>
 <div id="telaLogin">
     <div class="telaLogin">
         <div class="row">
@@ -12,7 +7,7 @@
         //se tiver algum erro ao tentar fazer login, imprime ele
         if (!empty($this->erroLogin)) { ?>
         <div class="row">
-            <p class="erroLogin bg-danger mk-txt-ali-cen"><?php echo $this->erroLogin;?></p>
+            <p class="erroLogin bg-danger mk-txt-ali-cen"><?=$this->erroLogin;?></p>
         </div>
         <?php }?>
         <form action="" method="post" class="formLogin navbar-form navbar-right" id="formTelaLogin">
@@ -25,7 +20,7 @@
                 <input type="password" id="password" name="passwordTelaLogin" class="text loginUser form-control" required="required" placeholder="Senha" />
             </div>
             <div class="row row-login form-group">
-                <a href="<?php echo BASE.'new-account'?>" class="btn" id="link-normal">criar conta</a> 
+                <a href="<?=BASE.'new-account'?>" class="btn" id="link-normal">criar conta</a> 
                 <input type="submit" name="submitTelaLogin" class="submit submitConcluir btn btn-success" value="Entrar" />
             </div>
         </form>
