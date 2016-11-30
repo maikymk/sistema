@@ -1,6 +1,6 @@
 <?php
 //recupera o nome do usuario logado
-$nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : '');
+$nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : 'Visitante');
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -14,31 +14,48 @@ $nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : '');
 <title>MK - Sistema 1</title>
 </head>
 <body>
-    <div class="conteudoFrame container-fluid">
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Sistema</span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?=BASE;?>">Sistema</a>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    <?php if (Sessao::verificaTempoSessao()) {?>
-                    <ul class="nav navbar-nav">
-                    </ul>
-                    <ul id="ul-logout" class="nav navbar-nav pull-right">
-                        <li><label id="nomeUser" class="mk-mar-top-15 color-fff">Bem vindo, <?=$nomeUsuario;?></label></li>
-                        <li><a id="logout" role="button" href="<?=BASE.'logout'?>">Logout</a></li>
-                    </ul>
-                    <?php }?>
-                </div>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img alt="logo" src="http://shopblob.blob.core.windows.net/1281-produtoimagem/zoom-XF041L%20(3).jpg" width="50">
+                </a>
             </div>
-        </nav>
-        <div class="container-mk">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav pull-right">
+                    <li><p class="navbar-text">Bem vindo, <?=$nomeUsuario;?></p></li>
+                    <?php if (Sessao::verificaTempoSessao()) {?>
+                    <li><a role="button" href="<?=BASE.'logout'?>">Sair</a></li>
+                    <?php }?>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div>
             <?=$this->container; ?>
         </div>
     </div>
-    <div class="rodapeFrame"></div>
 </body>
 </html>

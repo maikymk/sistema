@@ -177,15 +177,15 @@ class ControllerFrame {
         
         if (isset($_POST['submitNovaConta'])) {
             //envio de dados para cadastro via ajax
-            $erros = $this->model->validaNovaConta($_POST);
+            $sucesso = $this->model->validaNovaConta($_POST);
             
             // se todos os dados estiverem corretos retorna o usuário para a tela padrão
-            if ($erros === true) {
+            if ($sucesso === true) {
                 header("Location: " . BASE);
                 exit;
             }
 
-            $this->view->setErros($erros);
+            $this->view->setErros($sucesso);
         }
 
         //tela de criacao de conta
@@ -230,7 +230,7 @@ class ControllerFrame {
         	}
         }
         //retorna o erro padrao
-        return $this->setErro();
+        return $this->setErro('404');
     }
 
     /**

@@ -13,11 +13,10 @@ $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);
 $autoLoad->load();
 
-class ControllerHome extends AbstractAppController implements InterfaceController {
-	private $telaPadrao = 'home';
-	private $telas      = ["home"];
+class ControllerHome implements InterfaceController {
 	//caminho para os templates desse componente
-	private $templates = APP . 'Home' . DS . 'templates' . DS;
+	private $templates  = APP . 'Home' . DS . 'templates' . DS;
+	private $telaPadrao = 'home';
 	private $telaSolicitada;
 
 	public function __construct() {}
@@ -28,12 +27,7 @@ class ControllerHome extends AbstractAppController implements InterfaceControlle
 	 * @see InterfaceController::handle()
 	 */
 	public function handle() {
-		// se existir a solicitação de uma tela específica via GET, senão mostra a padrão
-		if (!empty($_GET["ac"]) && in_array($_GET["ac"], $this->telas)) {
-			$this->telaSolicitada = htmlentities($_GET["ac"]) . '.php';
-		} else {
-			$this->telaSolicitada = $this->telaPadrao . '.php';
-		}
+		$this->telaSolicitada = $this->telaPadrao . '.php';
 	}
 
 	/**
