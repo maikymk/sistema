@@ -39,7 +39,7 @@ class ViewFrame {
     }
 
     /**
-     * Seta os erros que serão exibidos na tela
+     * Seta os erros que serao exibidos na tela
      *
      * @param array $erros
      */

@@ -1,28 +1,34 @@
-<div id="telaLogin">
-    <div class="telaLogin">
-        <div class="row">
-            <h2 class="textoMedio center">Fa&ccedil;a login para acessar essa &aacute;rea</h2>
+<?php
+Css::addCss('tela-login');
+?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+            <h1 class="text-center login-title">Faça login para acessar essa área</h1>
+            <div class="account-wall">
+                <?php
+                //se tiver algum erro ao tentar fazer login, imprime ele
+                if (!empty($this->erros)) { ?>
+                <div class="row">
+                    <p class="text-center text-danger"><?=$this->erros;?></p>
+                </div>
+                <?php }?>
+                <form action="" method="post" class="form-signin">
+                    <input type="email" name="emailTelaLogin" class="form-control" required placeholder="E-mail" autofocus="" />
+                    <input type="password" name="passwordTelaLogin" class="form-control" required placeholder="Senha" />
+
+                    <button class="btn btn-lg btn-primary btn-block" name="submitTelaLogin" type="submit">Entrar</button>
+
+                    <label class="checkbox pull-left">
+                        <input type="checkbox" value="remember-me">
+                        Lembrar meus dados
+                    </label>
+                    
+                    <a href="#" class="pull-right need-help">Esqueci minha senha </a><span class="clearfix"></span>
+                </form>
+            </div>
+            <a href="<?=BASE.'new-account'?>" class="text-center new-account">Criar conta</a> 
         </div>
-        <?php
-        //se tiver algum erro ao tentar fazer login, imprime ele
-        if (!empty($this->erroLogin)) { ?>
-        <div class="row">
-            <p class="erroLogin bg-danger mk-txt-ali-cen"><?=$this->erroLogin;?></p>
-        </div>
-        <?php }?>
-        <form action="" method="post" class="formLogin navbar-form navbar-right" id="formTelaLogin">
-            <div class="row row-login form-group">
-                <!-- <label for="login" class="labelLogin">Login:</label> -->
-                <input type="email" id="login" name="emailTelaLogin" class="text loginUser form-control" required="required" placeholder="E-mail" />
-            </div>
-            <div class="row row-login form-group">
-                <!-- <label for="password" class="labelLogin">Senha:</label> -->
-                <input type="password" id="password" name="passwordTelaLogin" class="text loginUser form-control" required="required" placeholder="Senha" />
-            </div>
-            <div class="row row-login form-group">
-                <a href="<?=BASE.'new-account'?>" class="btn" id="link-normal">criar conta</a> 
-                <input type="submit" name="submitTelaLogin" class="submit submitConcluir btn btn-success" value="Entrar" />
-            </div>
-        </form>
     </div>
 </div>

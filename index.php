@@ -1,20 +1,22 @@
 <?php
+
 /**
- * Controller principal, todas as solicitacoes passam por ele
+ * Controller principal, todas as requisições passam por ele
  */
 
-require_once 'system' . DIRECTORY_SEPARATOR . 'config.php';
-require_once LIB . DS . 'autoload.php';
+require_once "system" . DIRECTORY_SEPARATOR . "config.php";
+require_once LIB . DS . "autoload.php";
 
-$array = array(
-    DIR_RAIZ => array('model.php', 'view.php'),
-    SYSTEM => array('query.php'),
-    LIB => ''
-);
+$array = [
+    DIR_RAIZ => ["model.php", "view.php"],
+    SYSTEM   => ["query.php"],
+    LIB 	 => "",
+	HELPER   => ["Css.php"]
+];
 
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array);
-$autoLoad->setExtensions(array('.php'));
+$autoLoad->setExtensions([".php"]);
 $autoLoad->load();
 
 class ControllerFrame {
@@ -91,10 +93,7 @@ class ControllerFrame {
     private function existePage() {
         $page = htmlentities($_GET['page']);
 
-        /**
-         * verifica se o usuario ja tem login e a sessao dele nao expirou,
-         * assim o usuario pode fazer logout ou acessar alguma page
-         */
+        // verifica se o usuario ja tem login e a sessao dele nao expirou
         if ($this->validaAcessoUser() && $this->verificaLogin()) {
             return $this->acoesUsuarioLogado($page);
         } else {
@@ -124,7 +123,7 @@ class ControllerFrame {
 
     /**
      * Valida se o usuario pode continuar acessando o site,
-     * ou se ele precisa fazer login novamente
+     * ou se ele precisa fazer login
      *
      * @return boolean
      */
@@ -139,6 +138,8 @@ class ControllerFrame {
 
     /**
      * Verifica a pagina que o usuario logado esta acesssando
+     * 
+     * @param string $page Pagina que esta tentando acessar
      */
     private function acoesUsuarioLogado($page) {
         //verifica se esta fazendo logout
@@ -160,7 +161,9 @@ class ControllerFrame {
     }
 
     /**
-     * Valida a cao que o usuario que nao tem login esta executando
+     * Valida a acao que o usuario que nao tem login esta executando
+     * 
+     * @param string $page Pagina que esta tentando acessar
      */
     private function acoesUsuarioSemLogin($page) {
         // se nao tiver login, o usuario so pode fazer a acao de nova conta
@@ -193,13 +196,19 @@ class ControllerFrame {
     }
 
     /**
-     * Instancia a classe que valida acesso do usuario, e verifica se ele está logando
+     * Instancia a classe que valida acesso do usuario, e verifica se ele esta logando
      *
      * @return boolean
      */
     private function verificaLogin() {
         $acesso = new ValidaAcesso();
-        return $acesso->validaLogin();
+        $valido = $acesso->validaLogin();
+        
+        $erro = $acesso->getErro();
+        
+        $this->view->setErros($erro);
+        
+        return $valido;
     }
 
     /**

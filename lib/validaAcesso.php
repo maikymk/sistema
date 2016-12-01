@@ -9,40 +9,39 @@
  */
 
 class ValidaAcesso {
-    private $acesso = false;
+    private $erro = false;
 
     public function __construct() {}
 
     /**
      * Valida o login, verifica se existe um $_POST com 
-     * os dados do usu�rio se n�o existir, 
+     * os dados do usuário se não existir, 
      * verifica se tem sessao e tenta logar pela sessao
      * 
-     * @return String|boolean 
-     * Retorna a variavel global $erro, 
-     * se tiver erro ela retorna uma msg, 
-     * se nao tiver ela retorna false
+     * @return boolean
      */
     public function validaLogin() {
         //verifica o usuario que esta tentando logar
         if (isset($_POST['submitTelaLogin'])) {
             if ($this->validaLoginTelaLogin()) {
                 Sessao::setTempoSessao();
-                $this->acesso = true;
+                return true;
             }
         } else {
             //tenta validar o usuario se ele tiver sessao
             if ($this->validaLoginSessao()) {
                 Sessao::setTempoSessao();
-                $this->acesso = true;
+                return true;
             }
         }
-        return $this->acesso;
+        return false;
     }
 
     /**
      * Valida o login do ususario pela tela de login, 
      * se o usuario conseguir logar, salva na sessao
+     * 
+     * @return bool
      */
     private function validaLoginTelaLogin() {
         $email = htmlentities($_POST['emailTelaLogin']);
@@ -50,26 +49,27 @@ class ValidaAcesso {
         $senha = $this->encriptSenha($senha);
         
         if ($this->validaBd($email, $senha)) {
-            Sessao::adicionaSessao(array('email' => $email, 'senha' => $senha));
+            Sessao::adicionaSessao(['email' => $email, 'senha' => $senha]);
             
-            $this->acesso = true;
             return true; 
         } else {
-            $this->acesso = 'Erro no usu&aacute;rio ou senha';
+            $this->erro = 'Erro no usuário ou senha';
         }
         return false;
     }
 
     /**
      * Valida o login do ususario pela sessao dele
+     * 
+     * @return bool
      */
     private function validaLoginSessao() {
         if (($email = Sessao::buscaSessao('email')) && ($senha = Sessao::buscaSessao('senha'))) {
             if ($this->validaBd($email, $senha)) {
-                $this->acesso = true;
+            	
                 return true;
             } else {
-                $this->acesso = 'Erro! A sessao de login e senha est&aacute; diferente do BD';
+                $this->erro = 'Erro! A sessao de login e senha estão diferente do BD';
             }
         }
         return false;
@@ -85,7 +85,7 @@ class ValidaAcesso {
      */
     private function validaBd($email, $senha) {
         $sql = "SELECT email FROM usuario WHERE email=? AND senha=? AND status=1";
-        return Query::sql($sql, array($email, $senha));
+        return Query::sql($sql, [$email, $senha]);
     }
 
     /**
@@ -96,5 +96,9 @@ class ValidaAcesso {
      */
     private function encriptSenha($senha) {
         return md5($senha);
+    }
+    
+    public function getErro() {
+    	return $this->erro;
     }
 }
