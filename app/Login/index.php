@@ -33,7 +33,17 @@ class ControllerLogin implements InterfaceController {
 	public function handle() {
 		$sucesso = $this->model->validaLogin();
 		
-		if (!$sucesso) {
+		if ($sucesso) {
+			$lastPage = Server::lastPage();
+			
+			if ($lastPage && strpos($lastPage, 'login')) {
+				header("Location: " . $lastPage);
+				exit;
+			}
+			
+			header("Location: " . DIR_RAIZ);
+			exit;
+		} else {
 			$erro = $this->model->getErro();
 			
 			$this->view->setErros($erro);
