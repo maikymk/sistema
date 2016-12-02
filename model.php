@@ -22,25 +22,6 @@ class ModelFrame {
 	}
 
 	/**
-	 * Valida os dados do novo cadastro
-	 * se estiver tudo certo ja salva no bd e na sessao
-	 *
-	 * @param array $dados Dados a serem validados
-	 * @return array|bool
-	 */
-	public function validaNovaConta($dados) {
-		$novaConta = new ValidaNovaConta ();
-		// valida os campos de cadastro de uma nova conta
-		$novaConta->validaCampos ($dados);
-		if ($erros = $novaConta->getErros ()) {
-			// retorna os erros que aconteceram ao tentar criar uma nova conta
-			return $erros;
-		}
-		
-		return $novaConta->criaNovaConta ($dados);
-	}
-
-	/**
 	 * Verifica o erro passado.
 	 * O erro padrao e 500 (Erro no servidor)
 	 *

@@ -8,10 +8,11 @@ require_once "system" . DIRECTORY_SEPARATOR . "config.php";
 require_once LIB . DS . "autoload.php";
 
 $array = [
-    DIR_RAIZ => ["model.php", "view.php"],
-    SYSTEM   => ["query.php"],
-    LIB 	 => "",
-	HELPER   => ["css.php"]
+	ABSTRACT_CLASS => "",
+    DIR_RAIZ 	   => ["model.php", "view.php"],
+    SYSTEM   	   => ["query.php"],
+    LIB 	 	   => "",
+	HELPER   	   => ["css.php"]
 ];
 
 $autoLoad = new Autoload();
@@ -41,13 +42,13 @@ class ControllerFrame {
         $telaErro = $this->verificaErro();
 
         if ($telaErro) {
-            $arquivo = $telaErro;
+            $tela = $telaErro;
         } else {
-            $arquivo = $this->verificaPage();
+        	$tela = $this->verificaPage();
         }
 
         //coloca o conteudo que o usuario acessou para ser exibido
-        $this->view->setContainer($arquivo);
+        $this->view->container = $tela;
         //monta a tela a ser exibida ao usuario
         $this->view->montaTela();
     }
@@ -94,7 +95,7 @@ class ControllerFrame {
         $page = htmlentities($_GET['page']);
 
         // verifica se o usuario ja tem login e a sessao dele nao expirou
-        if ($this->validaAcessoUser() && $this->verificaLogin()) {
+        if ($this->validaAcessoUser() && Usuario::getId() > 0) {
             return $this->acoesUsuarioLogado($page);
         } else {
             //usuario sem login so pode criar conta
@@ -113,7 +114,7 @@ class ControllerFrame {
          * ou se nao existe login do usuario
          * se acontecer algum dos casos mostra a tela de login
          */
-        if (!$this->validaAcessoUser() || !$this->verificaLogin()) {
+        if (!$this->validaAcessoUser() || !Usuario::getId()) {
             return $this->setTelaLogin();
         } else {
             //Passa o controller padrao de acesso
@@ -149,7 +150,6 @@ class ControllerFrame {
             return true;
         } else {
             //valida a pagina que o usuario esta tentando acessar, se nao existir retorna erro 404
-
             $pageUser = $this->validaAcesso($page);
 
             if ($pageUser) {
@@ -177,38 +177,8 @@ class ControllerFrame {
      * Verifica a acao do usuario que esta tentando criar um nova conta
      */
     private function novaConta() {
-        
-        if (isset($_POST['submitNovaConta'])) {
-            //envio de dados para cadastro via ajax
-            $sucesso = $this->model->validaNovaConta($_POST);
-            
-            // se todos os dados estiverem corretos retorna o usuário para a tela padrão
-            if ($sucesso === true) {
-                header("Location: " . BASE);
-                exit;
-            }
-
-            $this->view->setErros($sucesso);
-        }
-
         //tela de criacao de conta
         return $this->validaAcesso('NovaConta');
-    }
-
-    /**
-     * Instancia a classe que valida acesso do usuario, e verifica se ele esta logando
-     *
-     * @return boolean
-     */
-    private function verificaLogin() {
-        $acesso = new ValidaAcesso();
-        $valido = $acesso->validaLogin();
-        
-        $erro = $acesso->getErro();
-        
-        $this->view->setErros($erro);
-        
-        return $valido;
     }
 
     /**
@@ -233,9 +203,9 @@ class ControllerFrame {
         	$obj   = new $class();
         	$obj->handle();
 
-        	$nomeTela = $obj->getNomeTela();
-        	if ($nomeTela) {
-        		return $nomeTela;
+        	$tela = $obj->getTela();
+        	if ($tela) {
+        		return $tela;
         	}
         }
         //retorna o erro padrao

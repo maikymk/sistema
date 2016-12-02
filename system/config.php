@@ -87,6 +87,12 @@ define('CSS', DIR_RAIZ.'css'.DS);
 define('JS', DIR_RAIZ.'js'.DS);
 
 /**
+ * PASTA DE CLASSES ABSTRATAS
+ */
+
+define('ABSTRACT_CLASS', 'abstract'.DS);
+
+/**
  * PASTA DE COMPONENTES
  */
 
