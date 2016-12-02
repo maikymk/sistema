@@ -11,7 +11,7 @@ $array = [
     DIR_RAIZ => ["model.php", "view.php"],
     SYSTEM   => ["query.php"],
     LIB 	 => "",
-	HELPER   => ["Css.php"]
+	HELPER   => ["css.php"]
 ];
 
 $autoLoad = new Autoload();
@@ -68,10 +68,10 @@ class ControllerFrame {
     }
 
     /**
-     * Seta a tela de login e passa o erro ocorrido se existir
+     * Seta a tela de login
      */
     private function setTelaLogin() {
-        return TELA_LOGIN;
+    	return $this->validaAcesso('Login');
     }
 
     /**
@@ -192,7 +192,7 @@ class ControllerFrame {
         }
 
         //tela de criacao de conta
-        return TELA_NOVA_CONTA;
+        return $this->validaAcesso('NovaConta');
     }
 
     /**

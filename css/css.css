@@ -14,3 +14,18 @@ body {
     
     .navbar-fixed-top .navbar-brand { padding: 0 15px; }
 }
+
+/* MUDANDO PADRÕES DO BOOTSTRAP */
+
+.form-control {
+	border-radius: 0px !important;
+	margin-top: 2px !important;
+}
+
+input[type=date].form-control, input[type=time].form-control, input[type=datetime-local].form-control, input[type=month].form-control {
+	height: 44px;
+}
+
+.btn {
+	border-radius: 0px !important;
+}

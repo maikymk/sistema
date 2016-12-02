@@ -1,10 +1,10 @@
 <?php
-Css::addCss('tela-login');
+Css::addCss('tela-login-nova-conta');
 ?>
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <h1 class="text-center login-title">Faça login para acessar essa área</h1>
             <div class="account-wall">
                 <?php

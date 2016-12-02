@@ -23,7 +23,9 @@ class ValidaNovaConta {
         $this->verificaCampoPreenchido('dataNascimentoNovaConta', $dadosUser, 'data de nascimento');
         $this->verificaCampoPreenchido('emailNovaConta', $dadosUser, 'e-mail');
         $this->verificaCampoPreenchido('senhaNovaConta', $dadosUser, 'senha');
-        $this->verificaCampoPreenchido('senha2NovaConta', $dadosUser, 'repita a senha');
+        
+        // removido validacao dos campos de senha
+        //$this->verificaCampoPreenchido('senha2NovaConta', $dadosUser, 'repita a senha');
         
         //se a validacao de campo preenchido e nao nulo deu certo
         if (empty($this->erros)) {
@@ -32,7 +34,7 @@ class ValidaNovaConta {
             //valida a data de nascimento que o usuario passou, verifica se ele e maior de idade
             $this->validaData($dadosUser['dataNascimentoNovaConta']);
             //verifica se a senha e aconfirmacao de senha sao iguais
-            $this->comparaSenhas($dadosUser['senhaNovaConta'], $dadosUser['senha2NovaConta']);
+            //$this->comparaSenhas($dadosUser['senhaNovaConta'], $dadosUser['senha2NovaConta']);
         }
     }
 

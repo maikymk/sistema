@@ -6,16 +6,16 @@
  */
 $array_autoLoad = array(
 		INTERFACE_APP => [],
-		APP . 'Home' . DS => []
+		APP . 'Login' . DS => []
 );
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);
 $autoLoad->load();
 
-class ControllerHome implements InterfaceController {
+class ControllerLogin implements InterfaceController {
 	//caminho para os templates desse componente
-	private $templates  = APP . 'Home' . DS . 'templates' . DS;
-	private $telaPadrao = 'home';
+	private $templates  = APP . 'Login' . DS . 'templates' . DS;
+	private $telaPadrao = 'login';
 	private $telaSolicitada;
 
 	public function __construct() {}

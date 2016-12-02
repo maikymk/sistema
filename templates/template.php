@@ -62,5 +62,7 @@ $nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : 'Visitante');
 	            <?=$this->container; ?>
 	        </div>
 	    </div>
+	    
+	    <div id="back-modal"></div>
 	</body>
 </html>
