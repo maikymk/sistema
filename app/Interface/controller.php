@@ -12,11 +12,11 @@ interface InterfaceController {
      * Permite o proprio controller fazer suas requisicoes e funcionar da forma dele
      */
     function handle();
-
+    
     /**
-     * Retorna o nome do arquivo que irá ser renderizado
+     * Retorna o html do arquivo que irá ser renderizado
      *
-     * @return String Nome do arquivo
+     * @return String
      */
-    function getNomeTela();
+    function getTela();
 }
