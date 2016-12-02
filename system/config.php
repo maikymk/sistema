@@ -53,14 +53,8 @@ define('CACHE_USER_EXPIRES', 15);
 define('TEMPLATES', DIR_RAIZ.'templates'.DS);
 
 /**
- * Tela de login
+ * Idade mínima para criar conta
  */
-define('TELA_LOGIN', TEMPLATES.'telaLogin.php');
-
-/**
- * Tela de nova conta
- */
-define('TELA_NOVA_CONTA', TEMPLATES.'telaNovaConta.php');
 define('IDADE_MINIMA_NOVA_CONTA', date('Y-m-d', strtotime('-18 years')));
 
 /**
