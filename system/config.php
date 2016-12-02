@@ -60,7 +60,7 @@ define('IDADE_MINIMA_NOVA_CONTA', date('Y-m-d', strtotime('-18 years')));
 /**
  * PASTA COM AS TELAS DE ERRO
  */
-define('TELAS_ERRO', TEMPLATES.'telas_erro'.DS);
+define('TELAS_ERRO', TEMPLATES.'telas-erro'.DS);
 
 /**
  * ERRO PADRAO DE REQUISICAO
