@@ -7,7 +7,7 @@
  * @author maikysilva
  *
  */
-class ArquivosDiretorio {
+class FileAndDir {
     private static $dir;
     private static $exts;
 
@@ -47,7 +47,7 @@ class ArquivosDiretorio {
                 //monta o caminho com o nome do arquivo
                 $f = static::$dir . $file;
 
-                if (static::validaArquivo($f)) {
+                if (static::validateFile($f)) {
                     $allFiles[] = $file;
                 }
             }
@@ -56,7 +56,7 @@ class ArquivosDiretorio {
                 //monta o caminho com o nome do arquivo
                 $f = static::$dir . $file;
 
-                if (static::validaArquivo($f) && $fil = static::validaExtensao($file)) {
+                if (static::validateFile($f) && $fil = static::validateExtension($file)) {
                     $allFiles[] = $fil;
                 }
             }
@@ -70,7 +70,7 @@ class ArquivosDiretorio {
      *
      * @param String $dir Nome do diretorio a ser verificado
      */
-    public static function validaDiretorio($dir) {
+    public static function validateDir($dir) {
         if (is_dir($dir)) {
             return true;
         }
@@ -83,7 +83,7 @@ class ArquivosDiretorio {
      * @param String $file Caminho completo do arquivo
      * @return boolean Arquivo valido ou invalido
      */
-    public static function validaArquivo($file) {
+    public static function validateFile($file) {
         if (is_file($file) && ($file != '..') && ($file != '.')) {
             return true;
         }
@@ -97,7 +97,7 @@ class ArquivosDiretorio {
      * @param String $extFile Arquivo a ser verificada a extensao
      * @return array() Todos os arquivos com extensao valida
      */
-    private static function validaExtensao($file) {
+    private static function validateExtension($file) {
         preg_match('@^[a-zA-Z]+\.([a-zA-z]+)@', $file, $extFile);
 
         if (! empty($extFile)) {

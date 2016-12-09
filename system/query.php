@@ -12,7 +12,7 @@
 class Query {
     //funcoes que podem ser executadas no bd
     private static $crud = array('EXPLAIN', 'INSERT', 'SELECT', 'UPDATE', 'DELETE');
-    private static $tipoSql;
+    private static $typeSql;
     //variavel que faz a conexao com o BD
     private static $con = null;
 
@@ -26,7 +26,7 @@ class Query {
     /**
      * Funcao para fazer conexao com o BD
      */
-    private static function conectaBd() {
+    private static function connectBd() {
         if (! static::$con) {
             try {
                 static::$con = new PDO('mysql:host=' . HOST . ';dbname=' . BD, USER, PASSWORD);
@@ -46,7 +46,7 @@ class Query {
      */
     public static function sql($sql, $dados = null) {
         //tenta conectar ao BD
-        if (static::conectaBd()) {
+        if (static::connectBd()) {
             try {
                 //prepara a consulta para o BD
                 $stmt = static::$con->prepare($sql);
@@ -56,7 +56,7 @@ class Query {
 
                 try {
                     //verifica se o tipo de query que esta tentando fazer e aceita
-                    static::validaQuery($sql);
+                    static::validateQuery($sql);
                     /**
                      * inicia a transacao com o BD, a partir de agora as
                      * queris so terao efeito se for executado um commit,
@@ -67,7 +67,7 @@ class Query {
                     //executa a query
                     $linhasAfetadas = $stmt->execute();
 
-                    return static::retornoConsulta($linhasAfetadas, $stmt);
+                    return static::returnQuery($linhasAfetadas, $stmt);
                 } catch (PDOExecption $e) {
                     //se ocorrer algum erro faz rollback e volta o bd ao estado anterior
                     static::$con->rollback();
@@ -110,17 +110,17 @@ class Query {
      * @param resource $stmt Variavel responsavel por fazer o commit na consulta se estiver tudo certo
      * @return int|array()
      */
-    private static function retornoConsulta($linhasAfetadas, &$stmt) {
+    private static function returnQuery($linhasAfetadas, &$stmt) {
         $result;
-        if (static::$tipoSql == 'SELECT' || static::$tipoSql == 'EXPLAIN') {
+        if (static::$typeSql == 'SELECT' || static::$typeSql == 'EXPLAIN') {
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             //comita a query, sinal que ocorreu tudo como planejado
             static::$con->commit();
-        } elseif (static::$tipoSql == 'UPDATE' || static::$tipoSql == 'DELETE') {
+        } elseif (static::$typeSql == 'UPDATE' || static::$typeSql == 'DELETE') {
             //comita a query, sinal que ocorreu tudo como planejado
             static::$con->commit();
             $result = $linhasAfetadas;
-        } elseif (static::$tipoSql == 'INSERT') {
+        } elseif (static::$typeSql == 'INSERT') {
             //recupera o ultimo id inserido no bd
             $result = static::$con->lastInsertId();
             //comita a query, sinal que ocorreu tudo como planejado
@@ -135,12 +135,12 @@ class Query {
      * @param String $sql; instrucao sql a ser verificada
      * @return bool
      */
-    private static function validaQuery($sql) {
+    private static function validateQuery($sql) {
         $crud = explode(' ', $sql);
         $crud = strtoupper($crud[0]);
 
         if (in_array($crud, static::$crud)) {
-            static::$tipoSql = $crud;
+            static::$typeSql = $crud;
             return true;
         }
         return false;
@@ -149,21 +149,21 @@ class Query {
     /**
      * retorna o ultimo id inserido no BD
      */
-    public static function getUltimoId() {
+    public static function getLastId() {
         return static::$con->lastInsertId();
     }
 
     /**
      * Retorna a conexao com o BD
      */
-    public static function getConexao() {
+    public static function getConnection() {
         return static::$con;
     }
 
     /**
      * Funcao que desconecta do BD
      */
-    public static function desconectaBd() {
+    public static function disconnectBd() {
         mysqli_close(static::$con);
     }
 

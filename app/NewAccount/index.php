@@ -6,23 +6,23 @@
  */
 $array_autoLoad = [
 	INTERFACE_APP => [],
-	APP . 'NovaConta' . DS => []
+	APP . 'NewAccount' . DS => []
 ];
 $autoLoad = new Autoload();
 $autoLoad->setDirAndFiles($array_autoLoad);
 $autoLoad->load();
 
-class ControllerNovaConta implements InterfaceController {
+class ControllerNewAccount implements InterfaceController {
 	//caminho para os templates desse componente
-	// private $templates  = APP . 'NovaConta' . DS . 'templates' . DS;
-	private $telaPadrao = APP . 'NovaConta' . DS . 'templates' . DS . 'nova-conta.php';
+	// private $templates  = APP . 'NewAccount' . DS . 'templates' . DS;
+	private $defaultShow = APP . 'NewAccount' . DS . 'templates' . DS . 'new-account.php';
 	
 	private $model;
 	private $view;
 
 	public function __construct() {
-		$this->model = new ModelNovaConta();
-		$this->view  = new ViewNovaConta();
+		$this->model = new ModelNewAccount();
+		$this->view  = new ViewNewAccount();
 	}
 
 	/**
@@ -31,28 +31,28 @@ class ControllerNovaConta implements InterfaceController {
 	 * @see InterfaceController::handle()
 	 */
 	public function handle() {
-		if (isset($_POST['submitNovaConta'])) {
+		if (isset($_POST['submitNewAccount'])) {
 			//envio de dados para cadastro via ajax
-			$sucesso = $this->model->validaNovaConta($_POST);
+			$success = $this->model->validateNewAccount($_POST);
 		
 			// se todos os dados estiverem corretos retorna o usuário para a tela padrão
-			if ($sucesso === true) {
+			if ($success === true) {
 				header("Location: " . BASE);
 				exit;
 			}
 			
-			$this->view->setErros($sucesso);
+			$this->view->setErrorr($success);
 		}
 		
-		$this->view->setContainer($this->telaPadrao);
+		$this->view->setContainer($this->defaultShow);
 	}
 	
 	/**
 	 * 
 	 * {@inheritDoc}
-	 * @see InterfaceController::getTela()
+	 * @see InterfaceController::show()
 	 */
-	public function getTela() {
+	public function show() {
 		return $this->view->getContainer();
 	}
 }

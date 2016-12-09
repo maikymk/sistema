@@ -14,11 +14,14 @@ $autoLoad->load();
 
 class ControllerHome implements InterfaceController {
 	//caminho para os templates desse componente
-	private $templates  = APP . 'Home' . DS . 'templates' . DS;
-	private $telaPadrao = 'home';
-	private $telaSolicitada;
+	//private $templates   = APP . 'Home' . DS . 'templates' . DS;
+	private $defaultShow = APP . 'Home' . DS . 'templates' . DS . 'home.php';
 
-	public function __construct() {}
+	private $view;
+	
+	public function __construct() {
+		$this->view  = new ViewLogin();
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -26,15 +29,15 @@ class ControllerHome implements InterfaceController {
 	 * @see InterfaceController::handle()
 	 */
 	public function handle() {
-		$this->telaSolicitada = $this->telaPadrao . '.php';
+		$this->view->setContainer($this->defaultShow);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see InterfaceController::mostraTela()
+	 * @see InterfaceController::show()
 	 */
-	public function getNomeTela() {
-		return $this->templates . $this->telaSolicitada;
+	public function show() {
+		return $this->view->getContainer();
 	}
 }

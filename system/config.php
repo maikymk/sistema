@@ -53,19 +53,19 @@ define('CACHE_USER_EXPIRES', 15);
 define('TEMPLATES', DIR_RAIZ.'templates'.DS);
 
 /**
- * Idade mínima para criar conta
- */
-define('IDADE_MINIMA_NOVA_CONTA', date('Y-m-d', strtotime('-18 years')));
-
-/**
  * PASTA COM AS TELAS DE ERRO
  */
-define('TELAS_ERRO', TEMPLATES.'telas-erro'.DS);
+define('TEMPLATES_ERROR', TEMPLATES.'error'.DS);
+
+/**
+ * Idade mínima para criar conta
+ */
+define('MINIMUM_AGE_NEW_ACCOUNT', date('Y-m-d', strtotime('-18 years')));
 
 /**
  * ERRO PADRAO DE REQUISICAO
  */
-define('ERRO_PADRAO', '500');
+define('DEFAULT_ERROR', '500');
 
 /**
  * PASTA DE IMAGENS
@@ -74,7 +74,7 @@ define('ERRO_PADRAO', '500');
 //define a pasta padrao de imagens
 define('IMAGES', DIR_RAIZ.'images'.DS);
 //define a pasta padrao de imagens de ero
-define('IMAGES_ERRO', IMAGES.'erro'.DS);
+define('IMAGES_ERROR', IMAGES.'error'.DS);
 
 /**
  * PASTA DE CSS

@@ -5,18 +5,18 @@ class ModelFrame {
 	 * Chama o método que cria constantes com as variáveis definidas no BD
 	 */
 	public function __construct() {
-		//$this->geraConstantes();
+		//$this->generatesConstants();
 	}
 
 	/**
 	 * Cria constantes com as variáveis definidas no BD
 	 */
-	private function geraConstantes() {
-		$variaveis = Query::sql ("SELECT nome, valor FROM variavel WHERE status=1;");
+	private function generatesConstants() {
+		$variables = Query::sql ("SELECT nome, valor FROM variavel WHERE status=1;");
 
-		if (!empty($variaveis)) {
-			foreach ($variaveis as $variavel) {
-				define($variavel["nome"], $variavel["valor"]);
+		if (!empty($variables)) {
+			foreach ($variables as $variable) {
+				define($variable["nome"], $variable["valor"]);
 			}
 		}
 	}
@@ -25,13 +25,13 @@ class ModelFrame {
 	 * Verifica o erro passado.
 	 * O erro padrao e 500 (Erro no servidor)
 	 *
-	 * @param String $erro Recebe um erro e valida ele pra apresentar sua tela.
+	 * @param String $error Recebe um erro e valida ele pra apresentar sua tela.
 	 * @return String
 	 */
-	public function validaErro($erro) {
+	public function validateError($error) {
 		$telaErro;
 
-		switch ($erro) {
+		switch ($error) {
 			case '400' :
 				$telaErro = '400';
 				break;

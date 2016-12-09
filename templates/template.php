@@ -1,6 +1,6 @@
 <?php
 //recupera o nome do usuario logado
-$nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : 'Visitante');
+$userName = (! empty(User::getName()) ? User::getName() : 'Visitante');
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -48,8 +48,8 @@ $nomeUsuario = (! empty(Usuario::getNome()) ? Usuario::getNome() : 'Visitante');
 	                </ul>
 	
 	                <ul class="nav navbar-nav pull-right">
-	                    <li><p class="navbar-text">Bem vindo, <?=$nomeUsuario;?></p></li>
-	                    <?php if (Sessao::verificaTempoSessao()) {?>
+	                    <li><p class="navbar-text">Bem vindo, <?=$userName;?></p></li>
+	                    <?php if (Session::checkSessionTime()) {?>
 	                    <li><a role="button" href="<?=BASE.'logout'?>">Sair</a></li>
 	                    <?php }?>
 	                </ul>

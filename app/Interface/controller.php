@@ -18,5 +18,5 @@ interface InterfaceController {
      *
      * @return String
      */
-    function getTela();
+    function show();
 }

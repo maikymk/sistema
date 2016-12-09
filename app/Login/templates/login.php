@@ -1,5 +1,5 @@
 <?php
-Css::addCss('tela-login-nova-conta');
+Css::addCss('login-nova-conta');
 ?>
 
 <div class="container">
@@ -9,16 +9,16 @@ Css::addCss('tela-login-nova-conta');
             <div class="account-wall">
                 <?php
                 //se tiver algum erro ao tentar fazer login, imprime ele
-                if (!empty($this->erros)) { ?>
+                if (!empty($this->error)) { ?>
                 <div class="row">
-                    <p class="text-center text-danger"><?=$this->erros;?></p>
+                    <p class="text-center text-danger"><?=$this->error;?></p>
                 </div>
                 <?php }?>
                 <form action="" method="post" class="form-signin">
-                    <input type="email" name="emailTelaLogin" class="form-control" required placeholder="E-mail" autofocus="" />
-                    <input type="password" name="passwordTelaLogin" class="form-control" required placeholder="Senha" />
+                    <input type="email" name="emailLogin" class="form-control" required placeholder="E-mail" autofocus="" />
+                    <input type="password" name="passwordLogin" class="form-control" required placeholder="Senha" />
 
-                    <button class="btn btn-lg btn-primary btn-block" name="submitTelaLogin" type="submit">Entrar</button>
+                    <button class="btn btn-lg btn-primary btn-block" name="submitLogin" type="submit">Entrar</button>
 
                     <label class="checkbox pull-left">
                         <input type="checkbox" value="remember-me">

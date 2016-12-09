@@ -1,6 +1,6 @@
 <?php
 class ModelLogin {
-	private $erro = false;
+	private $error = false;
 	
 	public function __construct() {}
 	
@@ -11,17 +11,17 @@ class ModelLogin {
 	 *
 	 * @return boolean
 	 */
-	public function validaLogin() {
+	public function validateLogin() {
 		//verifica o usuario que esta tentando logar
-		if (isset($_POST['submitTelaLogin'])) {
-			if ($this->validaLoginTelaLogin()) {
-				Sessao::setTempoSessao();
+		if (isset($_POST['submitLogin'])) {
+			if ($this->validateLoginByPost()) {
+				Session::setSessionTime();
 				return true;
 			}
 		} else {
 			//tenta validar o usuario se ele tiver sessao
-			if ($this->validaLoginSessao()) {
-				Sessao::setTempoSessao();
+			if ($this->validateLoginBySession()) {
+				Session::setSessionTime();
 				return true;
 			}
 		}
@@ -34,17 +34,17 @@ class ModelLogin {
 	 *
 	 * @return bool
 	 */
-	private function validaLoginTelaLogin() {
-		$email = htmlentities($_POST['emailTelaLogin']);
-		$senha = htmlentities($_POST['passwordTelaLogin']);
-		$senha = $this->encriptSenha($senha);
+	private function validateLoginByPost() {
+		$email = htmlentities($_POST['emailLogin']);
+		$password = htmlentities($_POST['passwordLogin']);
+		$password = $this->encryptPassword($password);
 	
-		if ($this->validaBd($email, $senha)) {
-			Sessao::adicionaSessao(['email' => $email, 'senha' => $senha]);
+		if ($this->validateDataBd($email, $password)) {
+			Session::addSession(['email' => $email, 'password' => $password]);
 	
 			return true;
 		} else {
-			$this->erro = 'Erro no usuário ou senha';
+			$this->error = 'Erro no usuário ou senha';
 		}
 		return false;
 	}
@@ -54,13 +54,13 @@ class ModelLogin {
 	 *
 	 * @return bool
 	 */
-	private function validaLoginSessao() {
-		if (($email = Sessao::buscaSessao('email')) && ($senha = Sessao::buscaSessao('senha'))) {
-			if ($this->validaBd($email, $senha)) {
+	private function validateLoginBySession() {
+		if (($email = Session::findSession('email')) && ($password = Session::findSession('password'))) {
+			if ($this->validateDataBd($email, $password)) {
 				 
 				return true;
 			} else {
-				$this->erro = 'Erro! A sessao de login e senha estão diferente do BD';
+				$this->error = 'Erro! A sessao de login e senha estão diferente do BD';
 			}
 		}
 		return false;
@@ -71,25 +71,25 @@ class ModelLogin {
 	 * tentando fazer login existe no BD
 	 *
 	 * @param String $login Login do usuario tentando acessar
-	 * @param String $senha Senha do usuario tentando acessar
+	 * @param String $password Senha do usuario tentando acessar
 	 * @return String|0
 	 */
-	private function validaBd($email, $senha) {
+	private function validateDataBd($email, $password) {
 		$sql = "SELECT email FROM usuario WHERE email=? AND senha=? AND status=1";
-		return Query::sql($sql, [$email, $senha]);
+		return Query::sql($sql, [$email, $password]);
 	}
 	
 	/**
 	 * Funcao para encriptar senha e manter ela no mesmo padrao do BD
 	 *
-	 * @param String $senha Senha a ser encriptada
+	 * @param String $password Senha a ser encriptada
 	 * @return String
 	 */
-	private function encriptSenha($senha) {
-		return md5($senha);
+	private function encryptPassword($password) {
+		return md5($password);
 	}
 	
-	public function getErro() {
-		return $this->erro;
+	public function getErrors() {
+		return $this->error;
 	}
 }

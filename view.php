@@ -4,9 +4,9 @@ class ViewFrame extends AbstractView {
     public function __construct() {}
 
     /**
-     * Monta e presenta a tela para o usuario
+     * Monta e apresenta a tela para o usuario
      */
-    public function montaTela() {
+    public function show() {
         require_once 'templates' . DS . 'template.php';
     }
 }

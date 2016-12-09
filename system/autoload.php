@@ -4,13 +4,14 @@
  * 
  * Recebe um array com as pastas e os arquivos que serao requeridos.
  * Pode ser setado somente o array com as pastas.
- * Se nao setado os arquivos, e necessario setar as extensoes dos arquivos que deseja, ex.: .php
+ * Se nao setado os arquivos, e necessario setar as 
+ * extensoes dos arquivos que deseja, ex.: .php
  * 
  * @author Maiky Alves da Silva <maikymk@hotmail.com>
  */
 
 //faz require no arquivo que faz verificacao de arquivos e diretorios
-require_once HELPER . 'arquivosDiretorio.php';
+require_once HELPER . 'fileAndDir.php';
 
 class Autoload {
     //recebe o diretorio para buscar os arquivos dentro
@@ -39,7 +40,8 @@ class Autoload {
 
     /**
      * Seta as extensoes dos arquivos a serem buscado 'require_once' no auto_load.
-     * As extensoes sao sobreescritas pelos nomes de arquivos se estes forem passados. As extensoes precisam vir com o '.' antes do tipo. Ex: .php
+     * As extensoes sao sobreescritas pelos nomes de arquivos se estes forem passados. 
+     * As extensoes precisam vir com o '.' antes do tipo. Ex: .php
      * 
      * @param String $ext Extensoes validas para os arquivos
      */
@@ -69,7 +71,8 @@ class Autoload {
     }
 
     /**
-     * Verifica se foi setado diretorio e/ou arquivo e faz a chamada pra funcao exexutar o auto_load
+     * Verifica se foi setado diretorio e/ou arquivo e faz a 
+     * chamada pra funcao exexutar o auto_load
      */
     private function go() {
         if ($this->singleton()) {
@@ -102,11 +105,11 @@ class Autoload {
      */
     private function loadAllFilesDir($dir) {
         //passa o diretorio onde sera procurando os arquivos
-        ArquivosDiretorio::setDir($dir);
-        ArquivosDiretorio::setExtensions($this->exts);
+        FileAndDir::setDir($dir);
+        FileAndDir::setExtensions($this->exts);
         
         //retorna os arquivos encontrado
-        return ArquivosDiretorio::getFiles();
+        return FileAndDir::getFiles();
     }
 
     /**
@@ -116,7 +119,8 @@ class Autoload {
         if ($files) {
             $this->requireFiles($dir, $files);
         } else {
-            echo "<br><br>Nenhum arquivo encontrado no diretorio '" . $dir . "'. Verifique as extensoes e nomes de arquivo e tente novamente.<br><br>";
+            echo "<br><br>Nenhum arquivo encontrado no diretorio '" . $dir . "'. 
+            	  Verifique as extensoes e nomes de arquivo e tente novamente.<br><br>";
         }
     }
 
@@ -133,7 +137,8 @@ class Autoload {
             if (is_file($arq)) {
                 require_once $arq;
             } else {
-                echo '<br><br>Arquivo: ' . $file[0] . ' na pasta ' . $dir . ' nao foi carregado. Verifique o nome do arquivo e a extensao e tente novamente<br><br>';
+                echo "<br><br>Arquivo: " . $file[0] . " na pasta " . $dir . " nao foi carregado. 
+                	  Verifique o nome do arquivo e a extensao e tente novamente<br><br>";
             }
         }
     }

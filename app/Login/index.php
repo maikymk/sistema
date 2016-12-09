@@ -15,7 +15,7 @@ $autoLoad->load();
 class ControllerLogin implements InterfaceController {
 	//caminho para os templates desse componente
 	// private $templates  = APP . 'Login' . DS . 'templates' . DS;
-	private $telaPadrao = APP . 'Login' . DS . 'templates' . DS . 'login.php';
+	private $defaultShow = APP . 'Login' . DS . 'templates' . DS . 'login.php';
 	
 	private $model;
 	private $view;
@@ -31,9 +31,9 @@ class ControllerLogin implements InterfaceController {
 	 * @see InterfaceController::handle()
 	 */
 	public function handle() {
-		$sucesso = $this->model->validaLogin();
+		$success = $this->model->validateLogin();
 		
-		if ($sucesso) {
+		if ($success) {
 			$lastPage = Server::lastPage();
 			
 			if ($lastPage && strpos($lastPage, 'login')) {
@@ -44,20 +44,20 @@ class ControllerLogin implements InterfaceController {
 			header("Location: " . DIR_RAIZ);
 			exit;
 		} else {
-			$erro = $this->model->getErro();
+			$error = $this->model->getErrors();
 			
-			$this->view->setErros($erro);
+			$this->view->setErrorr($error);
 		}
 		
-		$this->view->setContainer($this->telaPadrao);
+		$this->view->setContainer($this->defaultShow);
 	}
 
 	/**
 	 * 
 	 * {@inheritDoc}
-	 * @see InterfaceController::getTela()
+	 * @see InterfaceController::show()
 	 */
-	public function getTela() {
+	public function show() {
 		return $this->view->getContainer();
 	}
 }

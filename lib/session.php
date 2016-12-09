@@ -8,12 +8,12 @@
  * @author Maiky Alves da Silva <maikymk@hotmail.com>
  */
 
-class Sessao {
+class Session {
 
     /**
      * Inicia a sessao
      */
-    public static function iniciaSessao() {
+    public static function sessionStart() {
         session_start();
     }
 
@@ -24,10 +24,10 @@ class Sessao {
      *
      * @return boolean
      */
-    public static function verificaTempoSessao() {
+    public static function checkSessionTime() {
         //se nao existir sessao ou o usuario nao tiver mais tempo de login, retorna false
-        if (!isset($_SESSION['time']) || $_SESSION['time'] < time()) {
-            Sessao::destroiSessao();
+        if (!static::validSession()) {
+            Session::destroySession();
             return false;
         }
         return true;
@@ -36,10 +36,10 @@ class Sessao {
     /**
      * Salva o tempo de duracao da sessao
      */
-    public static function setTempoSessao() {
-        $tempo = strtotime('+'.CACHE_USER_EXPIRES.' minute');
+    public static function setSessionTime() {
+        $time = strtotime('+'.CACHE_USER_EXPIRES.' minute');
         //salva o tempo que a sessao foi iniciada na sessao
-        static::adicionaSessao(array('time' => $tempo));
+        static::addSession(array('time' => $time));
     }
 
     /**
@@ -48,21 +48,21 @@ class Sessao {
      *
      * @param array() $sessoes Array com nome da sessao e valor a ser setado na sessao
      */
-    public static function adicionaSessao($sessoes) {
-        foreach ($sessoes as $key => $ar) {
-            $_SESSION[$key] = $ar;
+    public static function addSession($sessions) {
+        foreach ($sessions as $key => $session) {
+            $_SESSION[$key] = $session;
         }
     }
 
     /**
      * Busca uma sessao
      *
-     * @param String $sessao Sessao a ser verificada se essa existe
+     * @param String $session Session a ser verificada se essa existe
      * @return String|false Valor da sessao buscada, se ela nao existir retorna false
      */
-    public static function buscaSessao($sessao) {
-        if (isset($_SESSION[$sessao])) {
-            return $_SESSION[$sessao];
+    public static function findSession($session) {
+        if (isset($_SESSION[$session])) {
+            return $_SESSION[$session];
         }
         return false;
     }
@@ -70,10 +70,10 @@ class Sessao {
     /**
      * Deleta uma sessao
      *
-     * @param array() $nome Nome da(s) sessao(oes) a ser(em) deletada(s)
+     * @param array() $name Nome da(s) sessao(oes) a ser(em) deletada(s)
      */
-    public static function deletaSessao($nome = array()) {
-        foreach ($nome as $n) {
+    public static function deleteSession($name = array()) {
+        foreach ($name as $n) {
             unset($_SESSION[$n]);
         }
     }
@@ -81,24 +81,19 @@ class Sessao {
     /**
      * Destroi toda a sessao
      */
-    public static function destroiSessao() {
+    public static function destroySession() {
         //se tiver setado alguma sessao, destroi ela
         if (!empty($_SESSION)) {
             @session_destroy();
         }
     }
-
+    
     /**
-     * Valida se o usuario que esta acessando tem uma sessao
-     *
-     * @param String $user usuario que esta acessando
-     * @param String $senha senha do usuario que esta acessando
-     * @return boolean Se ja tiver sessao retorna true se n�o tiver retorna false
+     * Valida se existe um tempo de sessão e ele não expirou
+     * 
+     * @return boolean
      */
-    public static function validaSessao($user, $senha) {
-        if ((isset($_SESSION['usuario']) && $_SESSION['usuario'] == $user) && (isset($_SESSION['senha']) && $_SESSION['senha'] == $senha)) {
-            return true;
-        }
-        return false;
+    public static function validSession() {
+    	return (isset($_SESSION['time']) && $_SESSION['time'] >= time());
     }
 }

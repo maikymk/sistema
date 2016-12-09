@@ -2,19 +2,19 @@
 
 abstract class AbstractView {
     public $container;
-    public $erros = NULL;
+    public $error = NULL;
 
     public function __construct() {}
 
     /**
      * Recebe o caminho de um arquivo e retorna o seu conteudo
      *
-     * @param String $arq Arquivo para pegar o conteudo
+     * @param String $file Arquivo para buscar o conteudo
      * @return HTML Retorna o conteudo do arquivo
      */
-    private function retornaTela($arq) {
+    private function show($file) {
         ob_start();
-        require_once $arq;
+        require_once $file;
         $html = ob_get_contents();
         ob_end_clean();
 
@@ -24,21 +24,21 @@ abstract class AbstractView {
     /**
      * Busca o conteudo do arquivo passado
      *
-     * @param String $arquivo Caminho do arquivo a ser buscado o
+     * @param String $file Caminho do arquivo a ser buscado o
      * conteudo para ser exibido na tela para o usuario
      */
-    public function setContainer($arquivo) {
-        $this->container = $this->retornaTela($arquivo);
+    public function setContainer($file) {
+        $this->container = $this->show($file);
     }
     
     /**
      * Seta os erros que serao exibidos na tela
      *
-     * @param array $erros
+     * @param array $error
      */
-    public function setErros($erros) {
-        if (!empty($erros)) {
-            $this->erros = $erros;
+    public function setErrorr($error) {
+        if (!empty($error)) {
+            $this->error = $error;
         }
     }
 
